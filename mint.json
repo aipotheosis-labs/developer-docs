@@ -27,15 +27,19 @@
   },
   "tabs": [
     {
-      "name": "API Reference",
+      "name": "Reference",
       "url": "api-reference"
+    },
+    {
+      "name": "Tools",
+      "url": "tools"
     }
   ],
   "anchors": [
     {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://www.aipotheosis.xyz/"
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/aipotheosis-labs/aipolabs-python"
     },
     {
       "name": "Community",
@@ -53,19 +57,24 @@
       "group": "Introduction",
       "pages": [
         "overview",
-        "quickstart",
-        "development"
+        "quickstart"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Concepts",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "concepts/actionspace",
+        "concepts/project",
+        "concepts/integration",
+        "concepts/authentication"
+      ]
+    },
+    {
+      "group": "SDK",
+      "pages": [
+        "sdk/llmandlanguagecompatibility",
+        "sdk/metafunctions",
+        "sdk/usecases"
       ]
     },
     {
@@ -81,11 +90,17 @@
         "api-reference/endpoint/create",
         "api-reference/endpoint/delete"
       ]
+    },
+    {
+      "group": "Tools Catalogue",
+      "pages": [
+        "tools/catalogue"
+      ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://linkedin.com/company/mintlify"
+    "x": "https://x.com/AipoLabs",
+    "github": "https://github.com/aipotheosis-labs/aipolabs-python",
+    "linkedin": "https://www.linkedin.com/company/aipotheosis-labs-aipolabs/"
   }
 }
