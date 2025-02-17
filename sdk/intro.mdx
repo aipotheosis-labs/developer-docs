@@ -1,0 +1,81 @@
+---
+title: Intro
+description: Start using Aipolabs through our Python SDK
+icon: 'code'
+---
+
+## Usage
+Aipolabs platform is built with agent-first principles. Although you can call each of the APIs below any way you prefer in your application, we strongly recommend trying the Agent-centric features and taking a look at the examples to get the most out of the platform and to enable the full potential and vision of future agentic applications.
+
+## Client
+```
+from aipolabs import Aipolabs
+
+client = Aipolabs(
+    # it reads from environment variable by default so you can omit it if you set it in your environment
+    api_key=os.environ.get("AIPOLABS_API_KEY")
+)
+```
+
+## Apps
+### Types
+```
+from aipolabs.types.apps import App, AppDetails
+```
+
+### Methods
+```
+# search for apps, returns list of basic app data, sorted by relevance to the intent
+# all parameters are optional
+apps: list[App] = client.apps.search(
+    intent="I want to search the web",
+    configured_only=True,
+    categories=["search"],
+    limit=10,
+    offset=0
+)
+```
+```
+# get detailed information about an app, including functions supported by the app
+app_details: AppDetails = client.apps.get(app_name="BRAVE_SEARCH")
+```
+
+## Functions
+### Types
+```
+from aipolabs.types.functions import Function, FunctionExecutionResult, InferenceProvider
+```
+
+### Methods
+```
+# search for functions, returns list of basic function data, sorted by relevance to the intent
+# all parameters are optional
+functions: list[Function] = client.functions.search(
+    app_names=["BRAVE_SEARCH", "TAVILY"],
+    intent="I want to search the web",
+    configured_only=True,
+    limit=10,
+    offset=0
+)
+```
+```
+# get function definition of a specific function, this is the schema you can feed into LLM
+# the actual format is defined by the inference provider
+function_definition: dict = client.functions.get_definition(
+    function_name="BRAVE_SEARCH__WEB_SEARCH",
+    inference_provider=InferenceProvider.OPENAI
+)
+```
+```
+# execute a function with the provided parameters
+result: FunctionExecutionResult = client.functions.execute(
+    function_name="BRAVE_SEARCH__WEB_SEARCH",
+    function_parameters={"query": {"q": "what is the weather in barcelona"}},
+    linked_account_owner_id="john_doe"
+)
+
+if result.success:
+    print(result.data)
+else:
+    print(result.error)
+```

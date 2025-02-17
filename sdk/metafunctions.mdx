@@ -1,110 +1,40 @@
 ---
 title: Metafunctions
-description: Reusable, custom snippets to keep content in sync
+description: Helper functions that help agents use tools more easily
 icon: 'recycle'
 ---
+!TODO: William to rewrite
 
-import SnippetIntro from '/snippets/snippet-intro.mdx';
+## Agent-centric features
+The SDK provides a suite of features and helper functions to make it easier and more seamless to use functions in LLM powered agentic applications. This is our vision and the recommended way of trying out the SDK.
 
-<SnippetIntro />
+Meta Functions and Unified Function Calling Handler
+We provide 4 meta functions that can be used with LLMs as tools directly, and a unified handler for function calls. With these the LLM can discover apps and functions (that our platform supports) and execute them autonomously.
 
-## Creating a custom snippet
-
-**Pre-condition**: You must create your snippet file in the `snippets` directory.
-
-<Note>
-  Any page in the `snippets` directory will be treated as a snippet and will not
-  be rendered into a standalone page. If you want to create a standalone page
-  from the snippet, import the snippet into another file and call it as a
-  component.
-</Note>
-
-### Default export
-
-1. Add content to your snippet file that you want to re-use across multiple
-   locations. Optionally, you can add variables that can be filled in via props
-   when you import the snippet.
-
-```mdx snippets/my-snippet.mdx
-Hello world! This is my content I want to reuse across pages. My keyword of the
-day is {word}.
 ```
+from aipolabs import meta_functions
 
-<Warning>
-  The content that you want to reuse must be inside the `snippets` directory in
-  order for the import to work.
-</Warning>
-
-2. Import the snippet into your destination file.
-
-```mdx destination-file.mdx
----
-title: My title
-description: My Description
----
-
-import MySnippet from '/snippets/path/to/my-snippet.mdx';
-
-## Header
-
-Lorem impsum dolor sit amet.
-
-<MySnippet word="bananas" />
+# meta functions
+tools = [
+    meta_functions.AipolabsSearchApps.SCHEMA,
+    meta_functions.AipolabsSearchFunctions.SCHEMA,
+    meta_functions.AipolabsGetFunctionDefinition.SCHEMA,
+    meta_functions.AipolabsExecuteFunction.SCHEMA,
+]
 ```
-
-### Reusable variables
-
-1. Export a variable from your snippet file:
-
-```mdx snippets/path/to/custom-variables.mdx
-export const myName = 'my name';
-
-export const myObject = { fruit: 'strawberries' };
 ```
-
-2. Import the snippet from your destination file and use the variable:
-
-```mdx destination-file.mdx
----
-title: My title
-description: My Description
----
-
-import { myName, myObject } from '/snippets/path/to/custom-variables.mdx';
-
-Hello, my name is {myName} and I like {myObject.fruit}.
+# unified function calling handler
+result = client.handle_function_call(
+    tool_call.function.name,
+    json.loads(tool_call.function.arguments),
+    linked_account_owner_id="john_doe",
+    configured_only=True,
+    inference_provider=InferenceProvider.OPENAI
+)
 ```
+There are mainly two ways to use the platform with the meta functions:
 
-### Reusable components
+- **Fully Autonomous**: Provide all 4 meta functions to the LLM, please see the agent_with_dynamic_function_discovery_and_fixed_tools.py for more details.
+- **Semi Autonomous**: Provide all but AipolabsExecuteFunction to the LLM, and use the Unified Function Calling Handler to execute functions, please see the agent_with_dynamic_function_discovery_and_dynamic_tools.py for more details.
 
-1. Inside your snippet file, create a component that takes in props by exporting
-   your component in the form of an arrow function.
-
-```mdx snippets/custom-component.mdx
-export const MyComponent = ({ title }) => (
-  <div>
-    <h1>{title}</h1>
-    <p>... snippet content ...</p>
-  </div>
-);
-```
-
-<Warning>
-  MDX does not compile inside the body of an arrow function. Stick to HTML
-  syntax when you can or use a default export if you need to use MDX.
-</Warning>
-
-2. Import the snippet into your destination file and pass in the props
-
-```mdx destination-file.mdx
----
-title: My title
-description: My Description
----
-
-import { MyComponent } from '/snippets/custom-component.mdx';
-
-Lorem ipsum dolor sit amet.
-
-<MyComponent title={'Custom title'} />
-```
+Please also see agent_with_preplanned_tools.py for comparison where the specific functions are pre selected and provided to the LLM.

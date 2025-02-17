@@ -72,7 +72,7 @@
     {
       "group": "SDK",
       "pages": [
-        "sdk/llmandlanguagecompatibility",
+        "sdk/intro",
         "sdk/metafunctions",
         "sdk/usecases"
       ]
