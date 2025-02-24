@@ -3,7 +3,7 @@ title: Metafunctions
 description: Helper functions that help agents use tools more easily
 icon: 'recycle'
 ---
-!TODO: William to rewrite
+!TODO: Hanyi to update anything about meta functions in general
 
 ## Agent-centric features
 The SDK provides a suite of features and helper functions to make it easier and more seamless to use functions in LLM powered agentic applications. This is our vision and the recommended way of trying out the SDK.
@@ -32,9 +32,3 @@ result = client.handle_function_call(
     inference_provider=InferenceProvider.OPENAI
 )
 ```
-There are mainly two ways to use the platform with the meta functions:
-
-- **Fully Autonomous**: Provide all 4 meta functions to the LLM, please see the agent_with_dynamic_function_discovery_and_fixed_tools.py for more details.
-- **Semi Autonomous**: Provide all but AipolabsExecuteFunction to the LLM, and use the Unified Function Calling Handler to execute functions, please see the agent_with_dynamic_function_discovery_and_dynamic_tools.py for more details.
-
-Please also see agent_with_preplanned_tools.py for comparison where the specific functions are pre selected and provided to the LLM.
