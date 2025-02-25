@@ -56,11 +56,6 @@
           "anchor": "GitHub",
           "href": "https://github.com/aipotheosis-labs/aipolabs-python",
           "icon": "github"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://www.aipotheosis.xyz/",
-          "icon": "slack"
         }
       ]
     }
@@ -73,7 +68,7 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:team@aipolabs.xyz"
+        "href": "mailto:support@aipolabs.xyz"
       }
     ],
     "primary": {
