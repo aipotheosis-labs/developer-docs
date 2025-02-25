@@ -1,0 +1,136 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Starter Kit",
+  "colors": {
+    "primary": "#6269D2",
+    "light": "#FFFFFF",
+    "dark": "#1D2275"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "overview",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "concepts/actionspace",
+              "concepts/project",
+              "concepts/integration",
+              "concepts/authentication"
+            ]
+          },
+          {
+            "group": "SDK",
+            "pages": [
+              "sdk/intro",
+              "sdk/metafunctions",
+              "sdk/usecases"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API Documentation",
+            "pages": [
+              "api-reference/introduction",
+              {
+                "group": "Apps",
+                "pages": [
+                  "api-reference/apps/list-apps",
+                  "api-reference/apps/search-apps",
+                  "api-reference/apps/get-app-details"
+                ]
+              },
+              {
+                "group": "Functions",
+                "pages": [
+                  "api-reference/functions/list-functions",
+                  "api-reference/functions/search-functions",
+                  "api-reference/functions/get-function-definition",
+                  "api-reference/functions/execute"
+                ]
+              },
+              {
+                "group": "App Configurations",
+                "pages": [
+                  "api-reference/app-configurations/list-app-configurations",
+                  "api-reference/app-configurations/create-app-configuration",
+                  "api-reference/app-configurations/get-app-configuration",
+                  "api-reference/app-configurations/delete-app-configuration",
+                  "api-reference/app-configurations/update-app-configuration"
+                ]
+              },
+              {
+                "group": "Linked Accounts",
+                "pages": [
+                  "api-reference/linked-accounts/link-account-with-aipolabs-default-credentials",
+                  "api-reference/linked-accounts/link-oauth2-account",
+                  "api-reference/linked-accounts/linked-accounts-oauth2-callback",
+                  "api-reference/linked-accounts/list-linked-accounts",
+                  "api-reference/linked-accounts/get-linked-account",
+                  "api-reference/linked-accounts/delete-linked-account"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "GitHub",
+          "href": "https://github.com/aipotheosis-labs/aipolabs-python",
+          "icon": "github"
+        },
+        {
+          "anchor": "Community",
+          "href": "https://www.aipotheosis.xyz/",
+          "icon": "slack"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://www.aipotheosis.xyz/",
+          "icon": "newspaper"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:team@aipolabs.xyz"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://dashboard.mintlify.com"
+    }
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/AipoLabs",
+      "github": "https://github.com/aipotheosis-labs/aipolabs-python",
+      "linkedin": "https://www.linkedin.com/company/aipotheosis-labs-aipolabs/"
+    }
+  }
+}
