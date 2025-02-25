@@ -45,3 +45,116 @@ This is the most straright forward use case. You can directly find the functions
             linked_account_owner_id=LINKED_ACCOUNT_OWNER_ID,
             )
 ```
+
+## Semi Autonomous
+
+In this use case, the tools list provided to LLM API calls changes according to the function definitions retrieved by the agent from the Aipolabs ACI using the provided metafunctions.
+
+The retrieved function definitions are appended to the available tools list for LLMs to decide when and how to use it in subsequent LLM calls. This leverages the ability of many LLMs to 100% enforce adherence of function-call outputs to the provided definition, while still offering the flexibility to essentially access as many different tools as needed by the LLM-powered agent.
+
+The trade-off here is that the developer has to manage tool-list and know when to append or remove tools when making the LLM call.
+
+**Example starting tools lists provided to the LLM**
+```
+tools_meta = [
+    meta_functions.ACISearchApps.SCHEMA,
+    meta_functions.ACISearchFunctions.SCHEMA,
+    meta_functions.ACIGetFunctionDefinition.SCHEMA,
+]
+tools_retrieved: list[dict] = []
+```
+
+**Adding retrieved function definitions to the tools_retrieved list**
+```
+if tool_call.function.name == meta_functions.ACIGetFunctionDefinition.NAME:
+    tools_retrieved.append(result)
+```
+
+**Subsequent tool-calling**
+```
+response = openai.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {
+            "role": "system",
+            "content": prompt,
+        },
+        {
+            "role": "user",
+            "content": "Can you search online for some information about aipolabs ACI? Use whichever search tool you find most suitable for the task via the ACI meta functions.",
+        },
+    ]
+    + chat_history,
+    tools=tools_meta + tools_retrieved,
+    parallel_tool_calls=False,
+)
+if tool_call:
+    print(
+        f"{create_headline(f'Function Call: {tool_call.function.name}')} \n arguments: {tool_call.function.arguments}"
+    )
+
+    result = aci.handle_function_call(
+        tool_call.function.name,
+        json.loads(tool_call.function.arguments),
+        linked_account_owner_id=LINKED_ACCOUNT_OWNER_ID,
+        configured_only=True,
+        inference_provider=InferenceProvider.OPENAI,
+    )
+```
+
+For a full example, [see here](https://github.com/aipotheosis-labs/aipolabs-python/blob/main/examples/agent_with_dynamic_function_discovery_and_dynamic_tools.py).
+
+## Fully Autonomous
+
+In this use case, the tools list provided to the LLM is static, all 4 metafunctions from the Aipolabs ACI are included.
+
+The difference between this and the semi autonomous use case is that retrieved function definitions are provided to the LLM directly in the context window. The LLM then has to decide whether to call the ACIExecuteFunction metafunction to actually execute an API call.
+
+By using the metafunctions this way, the developer does not have to manage the tools list, but the accuracy of tool use can decrease.
+
+**Example tools list provided to LLM**
+```
+tools_meta = [
+    meta_functions.ACISearchApps.SCHEMA,
+    meta_functions.ACISearchFunctions.SCHEMA,
+    meta_functions.ACIGetFunctionDefinition.SCHEMA,
+    meta_functions.ACIExecuteFunction.SCHEMA,
+]
+```
+
+**Tool-calling through LLM**
+```
+response = openai.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {
+            "role": "system",
+            "content": prompt,
+        },
+        {
+            "role": "user",
+            "content": "Can you search online for some information about aipolabs ACI? Use whichever search tool you find most suitable for the task via the ACI meta functions.",
+        },
+    ]
+    + chat_history,
+    tools=tools_meta,
+    parallel_tool_calls=False,
+)
+
+tool_call = (
+    response.choices[0].message.tool_calls[0]
+    if response.choices[0].message.tool_calls
+    else None
+)
+
+if tool_call:
+    result = aci.handle_function_call(
+        tool_call.function.name,
+        json.loads(tool_call.function.arguments),
+        linked_account_owner_id=LINKED_ACCOUNT_OWNER_ID,
+        configured_only=True,
+        inference_provider=InferenceProvider.OPENAI,
+    )
+```
+
+For a full example, [see here](https://github.com/aipotheosis-labs/aipolabs-python/blob/main/examples/agent_with_dynamic_function_discovery_and_fixed_tools.py).
