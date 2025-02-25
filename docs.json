@@ -31,20 +31,52 @@
         ]
       },
       {
-        "tab": "Reference",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API Documentation",
+            "group": "Overview",
             "pages": [
               "api-reference/introduction"
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "Endpoints",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete"
+              {
+                "group": "Apps",
+                "pages": [
+                  "api-reference/apps/search-apps",
+                  "api-reference/apps/get-app-details"
+                ]
+              },
+              {
+                "group": "Functions",
+                "pages": [
+                  "api-reference/functions/search-functions",
+                  "api-reference/functions/get-function-definition",
+                  "api-reference/functions/execute"
+                ]
+              },
+              {
+                "group": "App Configurations",
+                "pages": [
+                  "api-reference/app-configurations/create-app-configuration",
+                  "api-reference/app-configurations/list-app-configurations",
+                  "api-reference/app-configurations/get-app-configuration",
+                  "api-reference/app-configurations/update-app-configuration",
+                  "api-reference/app-configurations/delete-app-configuration"
+                ]
+              },
+              {
+                "group": "Linked Accounts",
+                "pages": [
+                  "api-reference/linked-accounts/list-linked-accounts",
+                  "api-reference/linked-accounts/get-linked-account",
+                  "api-reference/linked-accounts/link-oauth2-account",
+                  "api-reference/linked-accounts/linked-accounts-oauth2-callback",
+                  "api-reference/linked-accounts/delete-linked-account"
+                ]
+              }
             ]
           }
         ]
