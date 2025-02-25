@@ -27,7 +27,7 @@
   },
   "tabs": [
     {
-      "name": "Reference",
+      "name": "API Reference",
       "url": "api-reference"
     },
     {
@@ -84,17 +84,41 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Apps",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/apps/list-apps",
+        "api-reference/apps/search-apps",
+        "api-reference/apps/get-app-details"
       ]
     },
     {
-      "group": "Tools Catalogue",
+      "group": "functions",
       "pages": [
-        "tools/catalogue"
+        "api-reference/functions/list-functions",
+        "api-reference/functions/search-functions",
+        "api-reference/functions/get-function-definition",
+        "api-reference/functions/execute"
+      ]
+    },
+    {
+      "group": "app-configurations",
+      "pages": [
+        "api-reference/app-configurations/list-app-configurations",
+        "api-reference/app-configurations/create-app-configuration",
+        "api-reference/app-configurations/get-app-configuration",
+        "api-reference/app-configurations/delete-app-configuration",
+        "api-reference/app-configurations/update-app-configuration"
+      ]
+    },
+    {
+      "group": "linked-accounts",
+      "pages": [
+        "api-reference/linked-accounts/link-account-with-aipolabs-default-credentials",
+        "api-reference/linked-accounts/link-oauth2-account",
+        "api-reference/linked-accounts/linked-accounts-oauth2-callback",
+        "api-reference/linked-accounts/list-linked-accounts",
+        "api-reference/linked-accounts/get-linked-account",
+        "api-reference/linked-accounts/delete-linked-account"
       ]
     }
   ],
