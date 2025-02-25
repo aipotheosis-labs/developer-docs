@@ -45,7 +45,7 @@
           {
             "group": "API Documentation",
             "pages": [
-              "api-reference/introduction",
+              "api-reference/overview",
               {
                 "group": "Apps",
                 "pages": [
