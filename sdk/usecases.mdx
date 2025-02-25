@@ -3,93 +3,45 @@ title: Use Cases
 description: Text, title, and styling in standard markdown
 icon: 'text-size'
 ---
-!TODO: William to rewrite following use cases
-There are mainly two ways to use the platform with the meta functions:
 
-- **Fully Autonomous**: Provide all 4 meta functions to the LLM, please see the agent_with_dynamic_function_discovery_and_fixed_tools.py for more details.
-- **Semi Autonomous**: Provide all but AipolabsExecuteFunction to the LLM, and use the Unified Function Calling Handler to execute functions, please see the agent_with_dynamic_function_discovery_and_dynamic_tools.py for more details.
+You can give your AI agent different levels of tool-use autonomy through the meta functions:
 
-Please also see agent_with_preplanned_tools.py for comparison where the specific functions are pre selected and provided to the LLM.
+- **Pre-planned**: Provide the specific functions to be used by an LLM.
+- **Semi Autonomous**: Provide all but the AipolabsExecuteFunction metafunction to the LLM.
+- **Fully Autonomous**: Provide all 4 meta functions to the LLM.
 
-## Titles
+## Pre-planned
 
-Best used for section headers.
-
-```md
-## Titles
+This is the most straright forward use case. You can directly find the functions you want to use on the developer portal, retrieve the function definitions, and append them to your LLM API call. This way your agents will only use the tools you have selected and provided, it would not attempt to find and use other tools.
 ```
+    brave_search_function_definition = aci.functions.get_definition(
+        Function.BRAVE_SEARCH__WEB_SEARCH
+    )
 
-### Subtitles
+    response = openai.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful assistant with access to a variety of tools.",
+            },
+            {
+                "role": "user",
+                "content": "What is aipolabs ACI?",
+            },
+        ],
+        tools=[brave_search_function_definition],
+    )
+    tool_call = (
+        response.choices[0].message.tool_calls[0]
+        if response.choices[0].message.tool_calls
+        else None
+    )
 
-Best use to subsection headers.
-
-```md
-### Subtitles
-```
-
-<Tip>
-
-Each **title** and **subtitle** creates an anchor and also shows up on the table of contents on the right.
-
-</Tip>
-
-## Text Formatting
-
-We support most markdown formatting. Simply add `**`, `_`, or `~` around text to format it.
-
-| Style         | How to write it   | Result          |
-| ------------- | ----------------- | --------------- |
-| Bold          | `**bold**`        | **bold**        |
-| Italic        | `_italic_`        | _italic_        |
-| Strikethrough | `~strikethrough~` | ~strikethrough~ |
-
-You can combine these. For example, write `**_bold and italic_**` to get **_bold and italic_** text.
-
-You need to use HTML to write superscript and subscript text. That is, add `<sup>` or `<sub>` around your text.
-
-| Text Size   | How to write it          | Result                 |
-| ----------- | ------------------------ | ---------------------- |
-| Superscript | `<sup>superscript</sup>` | <sup>superscript</sup> |
-| Subscript   | `<sub>subscript</sub>`   | <sub>subscript</sub>   |
-
-## Linking to Pages
-
-You can add a link by wrapping text in `[]()`. You would write `[link to google](https://google.com)` to [link to google](https://google.com).
-
-Links to pages in your docs need to be root-relative. Basically, you should include the entire folder path. For example, `[link to text](/writing-content/text)` links to the page "Text" in our components section.
-
-Relative links like `[link to text](../text)` will open slower because we cannot optimize them as easily.
-
-## Blockquotes
-
-### Singleline
-
-To create a blockquote, add a `>` in front of a paragraph.
-
-> Dorothy followed her through many of the beautiful rooms in her castle.
-
-```md
-> Dorothy followed her through many of the beautiful rooms in her castle.
-```
-
-### Multiline
-
-> Dorothy followed her through many of the beautiful rooms in her castle.
->
-> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-
-```md
-> Dorothy followed her through many of the beautiful rooms in her castle.
->
-> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-```
-
-### LaTeX
-
-Mintlify supports [LaTeX](https://www.latex-project.org) through the Latex component.
-
-<Latex>8 x (vk x H1 - H2) = (0,1)</Latex>
-
-```md
-<Latex>8 x (vk x H1 - H2) = (0,1)</Latex>
+    if tool_call:
+        result = aci.functions.execute(
+            tool_call.function.name,
+            json.loads(tool_call.function.arguments),
+            linked_account_owner_id=LINKED_ACCOUNT_OWNER_ID,
+            )
 ```

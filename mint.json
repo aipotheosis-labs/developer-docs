@@ -23,7 +23,7 @@
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "url": "https://platform.aci.dev"
   },
   "tabs": [
     {
@@ -45,11 +45,6 @@
       "name": "Community",
       "icon": "slack",
       "url": "https://www.aipotheosis.xyz/"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://www.aipotheosis.xyz/"
     }
   ],
   "navigation": [
@@ -58,15 +53,6 @@
       "pages": [
         "overview",
         "quickstart"
-      ]
-    },
-    {
-      "group": "Concepts",
-      "pages": [
-        "concepts/actionspace",
-        "concepts/project",
-        "concepts/integration",
-        "concepts/authentication"
       ]
     },
     {
@@ -89,12 +75,6 @@
         "api-reference/endpoint/get",
         "api-reference/endpoint/create",
         "api-reference/endpoint/delete"
-      ]
-    },
-    {
-      "group": "Tools Catalogue",
-      "pages": [
-        "tools/catalogue"
       ]
     }
   ],
