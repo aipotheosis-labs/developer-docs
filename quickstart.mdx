@@ -37,9 +37,7 @@ client = Aipolabs(
 
 ## 3. Add a Tool to Your LLM Request
 ```
-function_definition = aipolabs.functions.get_definition(
-        Function.BRAVE_SEARCH__WEB_SEARCH
-    )
+function_definition = aipolabs.functions.get_definition("BRAVE_SEARCH__WEB_SEARCH")
 
 response = openai.chat.completions.create(
         model="gpt-4o-mini",
