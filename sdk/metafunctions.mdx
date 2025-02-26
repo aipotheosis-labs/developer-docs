@@ -1,9 +1,21 @@
 ---
-title: Metafunctions
-description: Helper functions that help agents use tools more easily
+title: Meta Functions
+description: Designed with an LLM-centric approach
 icon: 'recycle'
 ---
-!TODO: Hanyi to update anything about meta functions in general
+Beyond the standard wrapper around the Aipolabs ACI APIs, our SDK includes a suite of helper functions and classes designed to empower agent developers to fully utilize the ACI platform’s capabilities. 
+
+One key feature is the set of four meta function schemas we provide.
+<Note>
+[ACI_SEARCH_APPS](https://github.com/aipotheosis-labs/aipolabs-python/blob/main/aipolabs/meta_functions/_aci_search_apps.py),
+[ACI_SEARCH_FUNCTIONS](https://github.com/aipotheosis-labs/aipolabs-python/blob/main/aipolabs/meta_functions/_aci_search_functions.py),
+[ACI_EXECUTE_FUNCTION](https://github.com/aipotheosis-labs/aipolabs-python/blob/main/aipolabs/meta_functions/_aci_execute_function.py), 
+[ACI_GET_FUNCTION_DEFINITION](https://github.com/aipotheosis-labs/aipolabs-python/blob/main/aipolabs/meta_functions/_aci_get_function_definition.py)
+</Note>
+
+These meta functions differ from the direct function (tool) calls you might typically execute—such as <i>GITHUB__LIST_STARGAZERS</i> —in that they are specifically tailored for use by large language models (LLMs). Their purpose is to enable LLMs to explore and interact with our APIs more easily and dynamically via [function calling](https://platform.openai.com/docs/guides/function-calling). 
+
+Together, these meta functions offer a powerful, self-discovery mechanism for LLM-driven applications, enabling them to autonomously select, interpret, and execute tools based on the context of a given task or conversation.
 
 ## Agent-centric features
 The SDK provides a suite of features and helper functions to make it easier and more seamless to use functions in LLM powered agentic applications. This is our vision and the recommended way of trying out the SDK.
