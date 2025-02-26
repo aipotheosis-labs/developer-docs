@@ -1,34 +1,35 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'The Aipolabs ACI API powers the ACI platform and SDK offered by Aipolabs.'
 ---
-!TODO: Hanyi to provide openapi.json
 
 <Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
+  Most of the time, you won’t need to interact with the API directly. Instead, you should use our system through either [platform](platform.aci.dev) or [SDK](https://github.com/aipotheosis-labs/aipolabs-python). 
 </Note>
 
-## Welcome
-
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+<Note>
+  Our [SDK](https://github.com/aipotheosis-labs/aipolabs-python) interacts with these APIs under the hood, but provide additional agent-centric features specifically designed for LLM-based agents.
+</Note>
 
 ## Authentication
+For programmatic access, the API supports API key-based authentication. You can generate an API key by creating an agent on Aipolabs ACI [platform](platform.aci.dev).
+You can then provide this API key to SDK environment variable or set it in X-API-KEY header if you are calling API directly.
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Once obtained, you can provide this API key as an environment variable for the SDK or include it in the `X-API-KEY` header when calling the API directly.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+<Card
+  title="Request Beta Access"
+  icon="lock-open"
+  href="https://platform.aci.dev/"
+>
+</Card>
+
+## Quota & Rate limiting
+
+During the beta period, all API calls are subject to a capped quota and rate limits. Currently, we allow up to 20 API calls per second and a total quota of 5,000 API calls per project per day.
+
+<Note>
+These limits are subject to change. If you have a use case that requires higher limits, please [contact us](mailto:support@aipolabs.xyz).
+</Note>
+
+

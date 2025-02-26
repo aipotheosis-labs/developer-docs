@@ -1,94 +1,124 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "Aipolabs",
+    "version": "0.0.1-beta.3"
   },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
   "paths": {
-    "/plants": {
+    "/v1/apps/search": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "tags": [
+          "apps"
+        ],
+        "summary": "Search Apps",
+        "description": "Search for Apps.\nIntented to be used by agents to search for apps based on natural language intent.",
+        "operationId": "apps-search_apps",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
         "parameters": [
+          {
+            "name": "intent",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Natural language intent for vector similarity sorting. Results will be sorted by relevance to the intent.",
+              "title": "Intent"
+            },
+            "description": "Natural language intent for vector similarity sorting. Results will be sorted by relevance to the intent."
+          },
+          {
+            "name": "configured_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "If true, only return apps that have been configured.",
+              "default": false,
+              "title": "Configured Only"
+            },
+            "description": "If true, only return apps that have been configured."
+          },
+          {
+            "name": "categories",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "List of categories for filtering.",
+              "title": "Categories"
+            },
+            "description": "List of categories for filtering."
+          },
           {
             "name": "limit",
             "in": "query",
-            "description": "The maximum number of results to return",
+            "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Maximum number of Apps per response.",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum number of Apps per response."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Pagination offset.",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Pagination offset."
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+                    "$ref": "#/components/schemas/AppBasic"
+                  },
+                  "title": "Response Apps-Search Apps"
                 }
               }
             }
           },
-          "400": {
-            "description": "Unexpected error",
+          "422": {
+            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -96,32 +126,836 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/v1/apps/{app_name}": {
+      "get": {
+        "tags": [
+          "apps"
+        ],
+        "summary": "Get App Details",
+        "description": "Returns an application (name, description, and functions).",
+        "operationId": "apps-get_app_details",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
         "parameters": [
           {
-            "name": "id",
+            "name": "app_name",
             "in": "path",
-            "description": "ID of plant to delete",
             "required": true,
             "schema": {
+              "type": "string",
+              "title": "App Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppBasicWithFunctions"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/functions/search": {
+      "get": {
+        "tags": [
+          "functions"
+        ],
+        "summary": "Search Functions",
+        "description": "Returns the basic information of a list of functions.",
+        "operationId": "functions-search_functions",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "app_names",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "List of app names for filtering functions.",
+              "title": "App Names"
+            },
+            "description": "List of app names for filtering functions."
+          },
+          {
+            "name": "intent",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Natural language intent for vector similarity sorting. Results will be sorted by relevance to the intent.",
+              "title": "Intent"
+            },
+            "description": "Natural language intent for vector similarity sorting. Results will be sorted by relevance to the intent."
+          },
+          {
+            "name": "configured_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "If true, only returns functions of apps that are configured.",
+              "default": false,
+              "title": "Configured Only"
+            },
+            "description": "If true, only returns functions of apps that are configured."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
               "type": "integer",
-              "format": "int64"
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Maximum number of Apps per response.",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum number of Apps per response."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Pagination offset.",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Pagination offset."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FunctionBasic"
+                  },
+                  "title": "Response Functions-Search Functions"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/functions/{function_name}/definition": {
+      "get": {
+        "tags": [
+          "functions"
+        ],
+        "summary": "Get Function Definition",
+        "description": "Return the function definition that can be used directly by LLM.\nThe actual content depends on the intended model (inference provider, e.g., OpenAI, Anthropic, etc.) and the function itself.",
+        "operationId": "functions-get_function_definition",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "function_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Function Name"
+            }
+          },
+          {
+            "name": "inference_provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/InferenceProvider",
+              "description": "The inference provider, which determines the format of the function definition.",
+              "default": "openai"
+            },
+            "description": "The inference provider, which determines the format of the function definition."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/OpenAIFunctionDefinition"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AnthropicFunctionDefinition"
+                    }
+                  ],
+                  "title": "Response Functions-Get Function Definition"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/functions/{function_name}/execute": {
+      "post": {
+        "tags": [
+          "functions"
+        ],
+        "summary": "Execute",
+        "operationId": "functions-execute",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "function_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Function Name"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FunctionExecute"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FunctionExecutionResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/app-configurations": {
+      "post": {
+        "tags": [
+          "app-configurations"
+        ],
+        "summary": "Create App Configuration",
+        "description": "Create an app configuration for a project",
+        "operationId": "app-configurations-create_app_configuration",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppConfigurationCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppConfigurationPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "app-configurations"
+        ],
+        "summary": "List App Configurations",
+        "description": "List all app configurations for a project, with optionally filters",
+        "operationId": "app-configurations-list_app_configurations",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "app_names",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by app names.",
+              "title": "App Names"
+            },
+            "description": "Filter by app names."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Maximum number of results per response.",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum number of results per response."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Pagination offset.",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Pagination offset."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppConfigurationPublic"
+                  },
+                  "title": "Response App-Configurations-List App Configurations"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/app-configurations/{app_name}": {
+      "get": {
+        "tags": [
+          "app-configurations"
+        ],
+        "summary": "Get App Configuration",
+        "description": "Get an app configuration by app name",
+        "operationId": "app-configurations-get_app_configuration",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "App Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppConfigurationPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "app-configurations"
+        ],
+        "summary": "Delete App Configuration",
+        "description": "Delete an app configuration by app name\nWarning: This will delete the app configuration from the project,\nassociated linked accounts, and then the app configuration record itself.",
+        "operationId": "app-configurations-delete_app_configuration",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "App Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "app-configurations"
+        ],
+        "summary": "Update App Configuration",
+        "description": "Update an app configuration by app name.\nIf a field is not included in the request body, it will not be changed.",
+        "operationId": "app-configurations-update_app_configuration",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "App Name"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppConfigurationUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppConfigurationPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/linked-accounts/oauth2": {
+      "get": {
+        "tags": [
+          "linked-accounts"
+        ],
+        "summary": "Link Oauth2 Account",
+        "description": "Start an OAuth2 account linking process.\nIt will return a redirect url (as a string, instead of RedirectResponse) to the OAuth2 provider's authorization endpoint.",
+        "operationId": "linked-accounts-link_oauth2_account",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "App Name"
+            }
+          },
+          {
+            "name": "linked_account_owner_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Linked Account Owner Id"
+            }
+          },
+          {
+            "name": "after_oauth2_link_redirect_url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "After Oauth2 Link Redirect Url"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Linked-Accounts-Link Oauth2 Account"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/linked-accounts/oauth2/callback": {
+      "get": {
+        "tags": [
+          "linked-accounts"
+        ],
+        "summary": "Linked Accounts Oauth2 Callback",
+        "description": "Callback endpoint for OAuth2 account linking.\n- A linked account (with necessary credentials from the OAuth2 provider) will be created in the database.",
+        "operationId": "linked-accounts-linked_accounts_oauth2_callback",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkedAccountPublic"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/linked-accounts": {
+      "get": {
+        "tags": [
+          "linked-accounts"
+        ],
+        "summary": "List Linked Accounts",
+        "description": "List all linked accounts.\n- Optionally filter by app_name and linked_account_owner_id.\n- app_name + linked_account_owner_id can uniquely identify a linked account.\n- This can be an alternatively way to GET /linked-accounts/{linked_account_id} for getting a specific linked account.",
+        "operationId": "linked-accounts-list_linked_accounts",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "App Name"
+            }
+          },
+          {
+            "name": "linked_account_owner_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Linked Account Owner Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LinkedAccountPublic"
+                  },
+                  "title": "Response Linked-Accounts-List Linked Accounts"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/linked-accounts/{linked_account_id}": {
+      "get": {
+        "tags": [
+          "linked-accounts"
+        ],
+        "summary": "Get Linked Account",
+        "description": "Get a linked account by its id.\n- linked_account_id uniquely identifies a linked account across the platform.",
+        "operationId": "linked-accounts-get_linked_account",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "linked_account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Linked Account Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkedAccountPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "linked-accounts"
+        ],
+        "summary": "Delete Linked Account",
+        "description": "Delete a linked account by its id.",
+        "operationId": "linked-accounts-delete_linked_account",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "linked_account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Linked Account Id"
             }
           }
         ],
         "responses": {
           "204": {
-            "description": "Plant deleted",
-            "content": {}
+            "description": "Successful Response"
           },
-          "400": {
-            "description": "unexpected error",
+          "422": {
+            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -132,63 +966,484 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
+      "AnthropicFunctionDefinition": {
         "properties": {
           "name": {
-            "description": "The name of the plant",
-            "type": "string"
+            "type": "string",
+            "title": "Name"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+          "description": {
+            "type": "string",
+            "title": "Description"
           },
-          {
-            "required": [
-              "id"
-            ],
+          "input_schema": {
             "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
+            "title": "Input Schema"
           }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+        },
         "type": "object",
+        "required": [
+          "name",
+          "description",
+          "input_schema"
+        ],
+        "title": "AnthropicFunctionDefinition"
+      },
+      "AppBasic": {
         "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
+          "name": {
+            "type": "string",
+            "title": "Name"
           },
-          "message": {
-            "type": "string"
+          "description": {
+            "type": "string",
+            "title": "Description"
           }
-        }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description"
+        ],
+        "title": "AppBasic"
+      },
+      "AppBasicWithFunctions": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "functions": {
+            "items": {
+              "$ref": "#/components/schemas/FunctionBasic"
+            },
+            "type": "array",
+            "title": "Functions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "functions"
+        ],
+        "title": "AppBasicWithFunctions"
+      },
+      "AppConfigurationCreate": {
+        "properties": {
+          "app_name": {
+            "type": "string",
+            "title": "App Name"
+          },
+          "security_scheme": {
+            "$ref": "#/components/schemas/SecurityScheme"
+          },
+          "security_scheme_overrides": {
+            "type": "object",
+            "title": "Security Scheme Overrides"
+          },
+          "all_functions_enabled": {
+            "type": "boolean",
+            "title": "All Functions Enabled",
+            "default": true
+          },
+          "enabled_functions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Enabled Functions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "app_name",
+          "security_scheme"
+        ],
+        "title": "AppConfigurationCreate",
+        "description": "Create a new app configuration\n“all_functions_enabled=True” → ignore enabled_functions.\n“all_functions_enabled=False” AND non-empty enabled_functions → selectively enable that list.\n“all_functions_enabled=False” AND empty enabled_functions → all functions disabled."
+      },
+      "AppConfigurationPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Project Id"
+          },
+          "app_name": {
+            "type": "string",
+            "title": "App Name"
+          },
+          "security_scheme": {
+            "$ref": "#/components/schemas/SecurityScheme"
+          },
+          "security_scheme_overrides": {
+            "type": "object",
+            "title": "Security Scheme Overrides"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "all_functions_enabled": {
+            "type": "boolean",
+            "title": "All Functions Enabled"
+          },
+          "enabled_functions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Enabled Functions"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "project_id",
+          "app_name",
+          "security_scheme",
+          "security_scheme_overrides",
+          "enabled",
+          "all_functions_enabled",
+          "enabled_functions",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "AppConfigurationPublic"
+      },
+      "AppConfigurationUpdate": {
+        "properties": {
+          "security_scheme": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SecurityScheme"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "security_scheme_overrides": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Security Scheme Overrides"
+          },
+          "enabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enabled"
+          },
+          "all_functions_enabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "All Functions Enabled"
+          },
+          "enabled_functions": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enabled Functions"
+          }
+        },
+        "type": "object",
+        "title": "AppConfigurationUpdate"
+      },
+      "FunctionBasic": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description"
+        ],
+        "title": "FunctionBasic"
+      },
+      "FunctionExecute": {
+        "properties": {
+          "function_input": {
+            "type": "object",
+            "title": "Function Input",
+            "description": "The input parameters for the function."
+          },
+          "linked_account_owner_id": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Linked Account Owner Id",
+            "description": "The owner id of the linked account. This is the id of the linked account owner in the linked account provider."
+          }
+        },
+        "type": "object",
+        "required": [
+          "linked_account_owner_id"
+        ],
+        "title": "FunctionExecute"
+      },
+      "FunctionExecutionResult": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "FunctionExecutionResult"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InferenceProvider": {
+        "type": "string",
+        "enum": [
+          "openai",
+          "anthropic"
+        ],
+        "title": "InferenceProvider"
+      },
+      "LinkedAccountPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Project Id"
+          },
+          "app_name": {
+            "type": "string",
+            "title": "App Name"
+          },
+          "linked_account_owner_id": {
+            "type": "string",
+            "title": "Linked Account Owner Id"
+          },
+          "security_scheme": {
+            "$ref": "#/components/schemas/SecurityScheme"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "project_id",
+          "app_name",
+          "linked_account_owner_id",
+          "security_scheme",
+          "enabled",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "LinkedAccountPublic"
+      },
+      "OpenAIFunction": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "strict": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strict"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "parameters": {
+            "type": "object",
+            "title": "Parameters"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "parameters"
+        ],
+        "title": "OpenAIFunction"
+      },
+      "OpenAIFunctionDefinition": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "function"
+            ],
+            "const": "function",
+            "title": "Type",
+            "default": "function"
+          },
+          "function": {
+            "$ref": "#/components/schemas/OpenAIFunction"
+          }
+        },
+        "type": "object",
+        "required": [
+          "function"
+        ],
+        "title": "OpenAIFunctionDefinition"
+      },
+      "SecurityScheme": {
+        "type": "string",
+        "enum": [
+          "no_auth",
+          "api_key",
+          "http_basic",
+          "http_bearer",
+          "oauth2"
+        ],
+        "title": "SecurityScheme",
+        "description": "security scheme type for an app (or function if support override)"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+      "APIKeyHeader": {
+        "type": "apiKey",
+        "description": "API key for authentication",
+        "in": "header",
+        "name": "X-API-KEY"
       }
     }
   }
