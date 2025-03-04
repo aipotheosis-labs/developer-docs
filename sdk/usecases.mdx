@@ -1,18 +1,18 @@
 ---
 title: Use Cases
-description: Text, title, and styling in standard markdown
+<!-- description: -->
 icon: 'text-size'
 ---
 
 You can give your AI agent different levels of tool-use autonomy through the meta functions:
 
-- **Pre-planned**: Provide the specific functions to be used by an LLM.
+- **Pre-planned**: Provide the specific functions to be used by the LLM.
 - **Semi Autonomous**: Provide all but the AipolabsExecuteFunction metafunction to the LLM.
-- **Fully Autonomous**: Provide all 4 meta functions to the LLM.
+- **Fully Autonomous**: Provide all 4 metafunctions to the LLM.
 
 ## Pre-planned
 
-This is the most straright forward use case. You can directly find the functions you want to use on the developer portal, retrieve the function definitions, and append them to your LLM API call. This way your agents will only use the tools you have selected and provided, it would not attempt to find and use other tools.
+This is the most straight forward use case. You can directly find the functions you want to use on the developer portal, retrieve the function definitions, and append them to your LLM API call. This way your agents will only use the tools you have selected and provided, it would not attempt to find and use other tools.
 ```
     brave_search_function_definition = aci.functions.get_definition("BRAVE_SEARCH__WEB_SEARCH")
 

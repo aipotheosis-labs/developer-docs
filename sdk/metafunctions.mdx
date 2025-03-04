@@ -3,9 +3,11 @@ title: Meta Functions
 description: Designed with an LLM-centric approach
 icon: 'recycle'
 ---
+
 Beyond the standard wrapper around the Aipolabs ACI APIs, the SDK provides a suite of features and helper functions to make it easier and more seamless to use functions in LLM powered agentic applications. This is our vision and the recommended way of trying out the SDK in agentic applications.
 
 One key feature is the set of four meta function schemas we provide:
+
 ```
 from aipolabs import meta_functions
 
@@ -17,9 +19,11 @@ tools = [
     meta_functions.AipolabsExecuteFunction.SCHEMA,
 ]
 ```
-These meta functions differ from the direct function (tool) calls you might typically execute—such as <i>GITHUB__LIST_STARGAZERS</i> —in that they are specifically tailored for use by large language models (LLMs) to interact with Aipolabs ACI API. Their purpose is to enable LLMs to explore and interact with our APIs more easily and dynamically via [function calling](https://platform.openai.com/docs/guides/function-calling). 
 
-Together with our <i>Unified Function Calling Handler</i>, it offer a powerful, self-discovery mechanism for LLM-driven applications, enabling them to autonomously select, interpret, and execute functions based on the context of a given task or conversation.
+These meta functions differ from the direct function (tool) calls you might typically execute—such as <i>GITHUB\_\_LIST\_STARGAZERS</i> —in that they are specifically tailored for use by LLMs to interact with the Aipolabs ACI API. Their purpose is to enable LLMs to explore and interact with our APIs more easily and dynamically via [function calling](https://platform.openai.com/docs/guides/function-calling).
+
+Together with our <i>Unified Function Calling Handler</i>, it offers a powerful, self-discovery mechanism for LLM-driven applications, enabling them to autonomously select, interpret, and execute functions based on the context of a given task or conversation.
+
 ```
 # unified function calling handler
 result = client.handle_function_call(
@@ -32,5 +36,5 @@ result = client.handle_function_call(
 ```
 
 <Note>
-For detailed examples, please refer to the [Use Cases](sdk/usecases) section or explore the runnable examples in the [SDK repository](https://github.com/aipotheosis-labs/aipolabs-python/tree/main/examples).
+  For detailed examples, please refer to the [Use Cases](sdk/usecases) section or explore the runnable examples in the [SDK repository](https://github.com/aipotheosis-labs/aipolabs-python/tree/main/examples).
 </Note>
