@@ -8,11 +8,11 @@ icon: 'filters'
 
 Through our [developer portal](https://platform.aci.dev) we allow developers to set filters for configured apps which limit their functionality. For example,
 
-| App            | Filter                                                                             |
-| :------------- | :--------------------------------------------------------------------------------- |
-| `BRAVE_SEARCH` | Perform search only if the query does not mention any violent incidents.           |
-| `GITHUB`       | Only access repositories related to backend technologies, not frontend frameworks. |
-| `GMAIL`        | Do not send emails to unlucky@server.com.                                          |
+| App            | Filter                                                                            |
+| :------------- | :-------------------------------------------------------------------------------- |
+| `BRAVE_SEARCH` | Perform search only if the query does not mention any violent incidents           |
+| `GITHUB`       | Only access repositories related to backend technologies, not frontend frameworks |
+| `GMAIL`        | Do not send emails to unlucky@server.com                                          |
 
 Before a function is executed in our *Unified Function Calling Handler* we check whether the function arguments violate the instruction filter, and correspondingly whether the function should be executed.
 
