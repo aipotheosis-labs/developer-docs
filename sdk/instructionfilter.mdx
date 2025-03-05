@@ -22,7 +22,7 @@ Before executing a function in our *Unified Function Calling Handler*, we verify
 
 ### Error Handling
 
-If the function call violates the instruction filter, we return a `HTTP_403_FORBIDDEN` exception. In the error message we include the function name, function input, corresponding instruction filter, and the reason for the rejection. Furthermore we include the text `"Custom instruction failed"` in the error message which allows the developer to identify the error as an instruction filter violation. Below is a code snippet which demonstrates how the Unified Function Calling Handler handles instruction filter violations.
+If the function call violates the instruction filter, we return a `HTTP_403_FORBIDDEN` exception. In the error message we include the function name, function input, corresponding instruction filter, and the reason for the rejection. Furthermore we include the text `"Custom instruction failed"` in the error message which allows the developer to identify the error as an instruction filter violation. Below is a code snippet which demonstrates how one can handle a instruction filter violation.
 
 ```python
 try:    
