@@ -38,7 +38,6 @@ try:
     if tool_call.function.name == meta_functions.AipolabsGetFunctionDefinition.NAME:
         tools_retrieved.append(result)
     
-    if verbose: print(f"{create_headline('Function Call Result')} \n {result}")
     # Add successful result to chat history
     chat_history.append(
         {"role": "tool", "tool_call_id": tool_call.id, "content": json.dumps(result)}
@@ -46,7 +45,6 @@ try:
 except Exception as e:
     print(f"Error: {e}")
     error_msg = str(e)
-    if verbose: print(f"{create_headline('Function Call Result')} \n {result}")
     
     if "Custom instruction failed" in error_msg:
         chat_history.append(
