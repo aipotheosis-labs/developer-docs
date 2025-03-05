@@ -8,7 +8,7 @@ Beyond the standard wrapper around the Aipolabs ACI APIs, the SDK provides a sui
 
 One key feature is the set of four meta function schemas we provide:
 
-```
+```python
 from aipolabs import meta_functions
 
 # meta functions
@@ -24,7 +24,7 @@ These meta functions differ from the direct function (tool) calls you might typi
 
 Together with our <i>Unified Function Calling Handler</i>, it offers a powerful, self-discovery mechanism for LLM-driven applications, enabling them to autonomously select, interpret, and execute functions based on the context of a given task or conversation.
 
-```
+```python
 # unified function calling handler
 result = client.handle_function_call(
     tool_call.function.name,

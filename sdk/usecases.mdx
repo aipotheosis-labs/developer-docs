@@ -13,7 +13,7 @@ You can give your AI agent different levels of tool-use autonomy through the met
 ## Pre-planned
 
 This is the most straight forward use case. You can directly find the functions you want to use on the developer portal, retrieve the function definitions, and append them to your LLM API call. This way your agents will only use the tools you have selected and provided, it would not attempt to find and use other tools.
-```
+```python
     brave_search_function_definition = aci.functions.get_definition("BRAVE_SEARCH__WEB_SEARCH")
 
     response = openai.chat.completions.create(
@@ -53,7 +53,7 @@ The retrieved function definitions are appended to the available tools list for 
 The trade-off here is that the developer has to manage tool-list and know when to append or remove tools when making the LLM call.
 
 **Example starting tools lists provided to the LLM**
-```
+```python
 tools_meta = [
     meta_functions.ACISearchApps.SCHEMA,
     meta_functions.ACISearchFunctions.SCHEMA,
@@ -63,13 +63,13 @@ tools_retrieved: list[dict] = []
 ```
 
 **Adding retrieved function definitions to the tools_retrieved list**
-```
+```python
 if tool_call.function.name == meta_functions.ACIGetFunctionDefinition.NAME:
     tools_retrieved.append(result)
 ```
 
 **Subsequent tool-calling**
-```
+```python
 response = openai.chat.completions.create(
     model="gpt-4o-mini",
     messages=[
@@ -111,7 +111,7 @@ The difference between this and the semi autonomous use case is that retrieved f
 By using the meta functions this way, the developer does not have to manage the tools list, but the accuracy of tool use can decrease.
 
 **Example tools list provided to LLM**
-```
+```python
 tools_meta = [
     meta_functions.ACISearchApps.SCHEMA,
     meta_functions.ACISearchFunctions.SCHEMA,
@@ -121,7 +121,7 @@ tools_meta = [
 ```
 
 **Tool-calling through LLM**
-```
+```python
 response = openai.chat.completions.create(
     model="gpt-4o-mini",
     messages=[
