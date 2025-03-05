@@ -25,7 +25,8 @@
             "pages": [
               "sdk/intro",
               "sdk/metafunctions",
-              "sdk/usecases"
+              "sdk/usecases",
+              "sdk/instructionfilter"
             ]
           }
         ]
