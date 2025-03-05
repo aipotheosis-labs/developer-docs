@@ -12,7 +12,7 @@ You can give your AI agent different levels of tool-use autonomy through the met
 
 ## Pre-planned
 
-This is the most straight forward use case. You can directly find the functions you want to use on the developer portal, retrieve the function definitions, and append them to your LLM API call. This way your agents will only use the tools you have selected and provided, it would not attempt to find and use other tools.
+This is the most straightforward use case. You can directly find the functions you want to use on the developer portal, retrieve the function definitions, and append them to your LLM API call. This way your agents will only use the tools you have selected and provided, it would not attempt to find and use other tools.
 ```python
     brave_search_function_definition = aci.functions.get_definition("BRAVE_SEARCH__WEB_SEARCH")
 
@@ -106,9 +106,9 @@ For a full example, [see here](https://github.com/aipotheosis-labs/aipolabs-pyth
 
 In this use case, the tools list provided to the LLM is static, all 4 meta functions from the Aipolabs ACI are included.
 
-The difference between this and the semi autonomous use case is that retrieved function definitions are provided to the LLM directly in the context window. The LLM then has to decide whether to call the ACIExecuteFunction meta function to actually execute an API call.
+Unlike the semi autonomous case - where retrieved function definitions are appended — the Fully Autonomous mode embeds these definitions directly in the context window, requiring the LLM to decide on utilizing the ACIExecuteFunction meta function to execute an API call.
 
-By using the meta functions this way, the developer does not have to manage the tools list, but the accuracy of tool use can decrease.
+By using the meta functions in this way, the developer does not have to manage the tools list, however the accuracy of tool use can decrease.
 
 **Example tools list provided to LLM**
 ```python
