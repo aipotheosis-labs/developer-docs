@@ -4,7 +4,7 @@ description: 'Guardrail API executions with instruction filters'
 icon: 'filters'
 ---
 
-### Overview
+## Overview
 
 Through our [developer portal](https://platform.aci.dev) we allow developers to set filters for configured apps which limit their functionality. For example,
 
@@ -17,8 +17,45 @@ Through our [developer portal](https://platform.aci.dev) we allow developers to 
 Before a function is executed in our *Unified Function Calling Handler* we check whether the function arguments violate the instruction filter, and correspondingly whether the function should be executed.
 
 <Note>
-  Currently instruction filters are added at the App level, in future releases we plan to offer it at the Function level.
+  Currently instruction filters are added at the App level, in future releases developers will be able to add them at the Function level. For example, instead of adding an instruction filter for `BRAVE_SEARCH` we could add one for `BRAVE_SEARCH__WEB_SEARCH`.
 </Note>
 
 ### Error Handling
-PZ:
+
+If the function call violates the instruction filter, we return a `HTTP_403_FORBIDDEN` exception. In the error message we include the function name, function input, corresponding instruction filter, and the reason for the rejection. Furthermore we include the text `"Custom instruction failed"` in the error message which allows the developer to identify the error as an instruction filter violation. Below is a code snippet which demonstrates how the Unified Function Calling Handler handles instruction filter violations.
+
+```python
+try:    
+    result = aipolabs.handle_function_call(
+        tool_call.function.name,
+        json.loads(tool_call.function.arguments),
+        linked_account_owner_id=LINKED_ACCOUNT_OWNER_ID,
+        configured_only=True,
+        inference_provider=InferenceProvider.OPENAI,
+    )
+    
+    # If the function call is a get, add the retrieved function definition to the tools_retrieved
+    if tool_call.function.name == meta_functions.AipolabsGetFunctionDefinition.NAME:
+        tools_retrieved.append(result)
+    
+    if verbose: print(f"{create_headline('Function Call Result')} \n {result}")
+    # Add successful result to chat history
+    chat_history.append(
+        {"role": "tool", "tool_call_id": tool_call.id, "content": json.dumps(result)}
+    )
+except Exception as e:
+    print(f"Error: {e}")
+    error_msg = str(e)
+    if verbose: print(f"{create_headline('Function Call Result')} \n {result}")
+    
+    if "Custom instruction failed" in error_msg:
+        chat_history.append(
+            {"role": "tool", "tool_call_id": tool_call.id, "content": f"The function call was rejected: {error_msg}"}
+        )
+        return chat_history
+    else:
+        # Handle other exceptions by adding them to chat history
+        chat_history.append(
+            {"role": "tool", "tool_call_id": tool_call.id, "content": f"An error occurred: {str(e)}"}
+        )
+```
