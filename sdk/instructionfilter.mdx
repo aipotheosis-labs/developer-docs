@@ -8,13 +8,13 @@ icon: 'filters'
 
 Through our [developer portal](https://platform.aci.dev) we allow developers to set instruction filters for configured apps which limit their functionality. For example you could set an instruction filter for `BRAVE_SEARCH` to only allow searches for non-violent incidents. Other examples include:
 
-| App            | Filter                                                                            |
+| App            |  Instruction Filter                                                                            |
 | :------------- | :-------------------------------------------------------------------------------- |
 | `BRAVE_SEARCH` | Perform search only if the query does not mention any violent incidents           |
 | `GITHUB`       | Only access repositories related to backend technologies, not frontend frameworks |
 | `GMAIL`        | Do not send emails to unlucky@server.com                                          |
 
-Before a function is executed in our *Unified Function Calling Handler* we check whether the function arguments violate the instruction filter, and correspondingly whether the function should be executed.
+Before a function is executed in our *Unified Function Calling Handler* we check whether the function arguments violate the instruction filter and whether the function should be executed.
 
 <Note>
   Currently instruction filters are added at the App level, in future releases developers will be able to add them at the Function level. For example, instead of adding an instruction filter for `BRAVE_SEARCH` we could add one for `BRAVE_SEARCH__WEB_SEARCH`.
