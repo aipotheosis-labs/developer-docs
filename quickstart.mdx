@@ -16,17 +16,17 @@ Please ensure you have the following:
 ## 1. Install Aipolabs ACI Python Client
 
 Install with pip:
-```
+```bash
 pip install aipolabs
 ```
 
 Install with poetry:
-```
+```bash
 poetry add aipolabs
 ```
 
 ## 2. Set up your Aipolabs ACI Client
-```
+```python
 from aipolabs import Aipolabs
 
 client = Aipolabs(
@@ -36,7 +36,7 @@ client = Aipolabs(
 ```
 
 ## 3. Add a Tool to Your LLM Request
-```
+```python
 function_definition = aipolabs.functions.get_definition("BRAVE_SEARCH__WEB_SEARCH")
 
 response = openai.chat.completions.create(
@@ -57,7 +57,7 @@ response = openai.chat.completions.create(
 ```
 
 ## 4. Execute Tool Calls
-```
+```python
 tool_call = (
     response.choices[0].message.tool_calls[0]
     if response.choices[0].message.tool_calls
