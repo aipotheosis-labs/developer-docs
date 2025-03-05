@@ -14,7 +14,7 @@ Through our [developer portal](https://platform.aci.dev) we allow developers to 
 | `GITHUB`       | Only access repositories related to backend technologies, not frontend frameworks |
 | `GMAIL`        | Do not send emails to unlucky@server.com                                          |
 
-Before a function is executed in our *Unified Function Calling Handler* we check if the function arguments violate the instruction filter and whether the function should be executed.
+Before executing a function in our *Unified Function Calling Handler*, we verify that the function arguments comply with any instruction filters that have been set.
 
 <Note>
   Currently instruction filters are added at the App level, in future releases developers will be able to add them at the Function level. For example, instead of adding an instruction filter for `BRAVE_SEARCH` we could add one for `BRAVE_SEARCH__WEB_SEARCH`.
