@@ -11,10 +11,10 @@ from aipolabs import meta_functions
 
 # meta functions
 tools = [
-    meta_functions.AipolabsSearchApps.SCHEMA,
-    meta_functions.AipolabsSearchFunctions.SCHEMA,
-    meta_functions.AipolabsGetFunctionDefinition.SCHEMA,
-    meta_functions.AipolabsExecuteFunction.SCHEMA,
+    meta_functions.ACISearchApps.SCHEMA,
+    meta_functions.ACISearchFunctions.SCHEMA,
+    meta_functions.ACIGetFunctionDefinition.SCHEMA,
+    meta_functions.ACIExecuteFunction.SCHEMA,
 ]
 ```
 These meta functions differ from the direct function (tool) calls you might typically execute—such as <i>GITHUB__LIST_STARGAZERS</i> —in that they are specifically tailored for use by large language models (LLMs) to interact with Aipolabs ACI API. Their purpose is to enable LLMs to explore and interact with our APIs more easily and dynamically via [function calling](https://platform.openai.com/docs/guides/function-calling). 
@@ -26,8 +26,8 @@ result = client.handle_function_call(
     tool_call.function.name,
     json.loads(tool_call.function.arguments),
     linked_account_owner_id="john_doe",
-    configured_only=True,
-    inference_provider=InferenceProvider.OPENAI
+    allowed_apps_only=True,
+    format=FunctionDefinitionFormat.OPENAI
 )
 ```
 

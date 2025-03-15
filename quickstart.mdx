@@ -27,17 +27,17 @@ poetry add aipolabs
 
 ## 2. Set up your Aipolabs ACI Client
 ```
-from aipolabs import Aipolabs
+from aipolabs import ACI
 
-client = Aipolabs(
+client = ACI(
     # it reads from environment variable by default so you can omit it if you set it in your environment
-    api_key=os.environ.get("AIPOLABS_API_KEY")
+    api_key=os.environ.get("AIPOLABS_ACI_API_KEY")
 )
 ```
 
 ## 3. Add a Tool to Your LLM Request
 ```
-function_definition = aipolabs.functions.get_definition("BRAVE_SEARCH__WEB_SEARCH")
+function_definition = aci.functions.get_definition("BRAVE_SEARCH__WEB_SEARCH")
 
 response = openai.chat.completions.create(
         model="gpt-4o-mini",
@@ -64,7 +64,7 @@ tool_call = (
     else None
 )
 
-result = aipolabs.functions.execute(
+result = aci.functions.execute(
     tool_call.function.name,
     json.loads(tool_call.function.arguments),
     linked_account_owner_id=LINKED_ACCOUNT_OWNER_ID,
