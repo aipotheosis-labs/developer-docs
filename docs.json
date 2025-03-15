@@ -88,6 +88,11 @@
           "anchor": "GitHub",
           "href": "https://github.com/aipotheosis-labs/aipolabs-python",
           "icon": "github"
+        },
+        {
+          "anchor": "Discord",
+          "href": "https://discord.gg/Ta6CCQTC",
+          "icon": "discord"
         }
       ]
     }
