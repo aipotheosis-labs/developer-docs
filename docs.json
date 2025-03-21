@@ -21,6 +21,17 @@
             ]
           },
           {
+            "group": "Core Concepts",
+            "pages": [
+              "core-concepts/app",
+              "core-concepts/app-configuration",
+              "core-concepts/function",
+              "core-concepts/linked-account",
+              "core-concepts/project",
+              "core-concepts/agent"
+            ]
+          },
+          {
             "group": "SDK",
             "pages": [
               "sdk/intro",
