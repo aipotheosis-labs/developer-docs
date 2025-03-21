@@ -16,8 +16,8 @@
           {
             "group": "Introduction",
             "pages": [
-              "overview",
-              "quickstart"
+              "introduction/overview",
+              "introduction/quickstart"
             ]
           },
           {
