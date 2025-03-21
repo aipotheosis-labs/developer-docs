@@ -1,0 +1,74 @@
+---
+title: 'Introduction'
+description: 'Introduction to ACI.dev MCP Servers'
+---
+
+
+## Overview
+ACI.dev provides two Model Context Protocol (MCP) servers that give LLMs access to a wide range of external functions and tools.
+The codebase is open source and can be found here: [aipolabs-mcp](https://github.com/aipotheosis-labs/aipolabs-mcp).
+
+
+## Two Types of MCP Servers
+- **Apps MCP Server**: This server is similar to most of the existing MCP servers out there, where it exposes a set of functions from a specific app (e.g., Gmail, Github, etc.). However, our `Apps MCP Server` allows you to include multiple apps in a single server.
+- **Unified MCP Server**: This server is a dynamic server that provides two meta functions (tools) to discover and execute ANY functions (tools) available on ACI.dev platform.
+
+For pros and cons of each server, please refer to the individual sections.
+
+
+## Prerequisites
+
+Before using either MCP server, you need to complete several setup steps on the ACI.dev platform:
+
+<Steps>
+  <Step title="Get your ACI.dev API Key">
+    You'll need an API key from one of your ACI.dev agents. Find this in your [project settings](https://platform.aci.dev/project-settings)
+  </Step>
+  <Step title="Configure Apps">
+    Navigate to the [App Store](https://platform.aci.dev/apps) to configure the apps you want to use with your MCP servers.
+    <Note>
+      For more details on what is an app and how to configure it, please refer to the [App](../core-concepts/app) section.
+    </Note>
+  </Step>
+  <Step title="Set Allowed Apps">
+    In your [Project Settings](https://platform.aci.dev/project-settings), enable the apps you want your agent to access by adding them to the `Allowed Apps` list.
+    <Note>
+      For more details on how and why to set allowed apps, please refer to the [Agent](../core-concepts/agent) section.
+    </Note>
+  </Step>
+  <Step title="Link Accounts For Each App">
+    For each app you want to use, you'll need to link end-user (or your own) accounts. During account linking, you'll specify a `linked-account-owner-id` which you'll later provide when starting the MCP servers.
+    <Note>
+      For more details on how to link accounts and what `linked-account-owner-id` is, please refer to the [Linked Accounts](../core-concepts/linked-account) section.
+    </Note>
+
+  </Step>
+  <Step title="Install the Package">
+    ```bash
+    # Install uv if you don't have it already
+    curl -sSf https://install.pypa.io/get-pip.py | python3 -
+    pip install uv
+    ```
+  </Step>
+</Steps>
+
+
+## Environment Variables
+
+Set the following environment variable before running either MCP server:
+
+```bash
+export AIPOLABS_ACI_API_KEY=your_aci_api_key
+```
+
+## Next Steps
+
+Choose the MCP server that best fits your needs and follow the instructions in the respective sections.
+<CardGroup cols={2}>
+  <Card title="Unified MCP Server" icon="circle-nodes" href="/mcp-servers/unified-mcp-server">
+    A unified, dynamic MCP server that provides two meta functions (tools) to discover and execute ANY functions (tools) available on ACI.dev platform.
+  </Card>
+  <Card title="Apps MCP Server" icon="puzzle-piece" href="/mcp-servers/apps-mcp-server">
+    A traditional MCP server that directly exposes functions from specific apps that you pre-select, allowing multiple apps to be included in a single server.
+  </Card>
+</CardGroup>
