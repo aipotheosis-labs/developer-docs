@@ -1,0 +1,93 @@
+---
+title: 'Apps MCP Server'
+description: 'Expose functions from specific apps that you pre-select'
+---
+
+## Overview
+
+The `Apps MCP Server` provides direct access to functions (tools) from specific app(s) you select. Unlike most MCP servers that are bound to a single app, this server allows you to combine multiple apps in one server.
+
+## Benefits
+
+- **Multi-App Support** - Include functions from multiple apps in a single MCP server
+- **Direct Function Access** - Functions appear directly in the LLM's tool list without discovery steps (Which usually have better performance if your usecase is very specific)
+- **Selective Inclusion** - Only include the Apps whose functions you want to expose
+- **Reduced Server Management** - No need to run multiple MCP servers for different apps
+- **Familiar Pattern** - Similar to traditional MCP server concept but with multi-app capability
+
+## How It Works
+
+The Apps MCP Server directly exposes the functions (tools) from the apps you specify with the `--apps` parameter. When an MCP client interacts with this server, all functions from the specified apps will be available in its tool list.
+
+This approach differs from the `Unified MCP Server` in that there's no dynamic discovery process - all function (tool) definitions are directly available to MCP clients.
+
+<Note>
+  Unlike most MCP servers that are limited to a single app, the `Apps MCP Server` allows you to combine functions from multiple apps in a single server, reducing the number of servers you need to manage.
+</Note>
+
+## Prerequisites
+
+Before using the `Apps MCP Server`, you need to complete several setup steps on the ACI.dev platform.
+
+<Steps>
+  <Step title="Get your ACI.dev API Key">
+    You'll need an API key from one of your ACI.dev agents. Find this in your [project settings](https://platform.aci.dev/project-settings)
+  </Step>
+  <Step title="Configure Apps">
+    Navigate to the [App Store](https://platform.aci.dev/apps) to configure the apps you want to use with your MCP servers.
+    <Note>
+      For more details on what is an app and how to configure it, please refer to the [App](../core-concepts/app) section.
+    </Note>
+  </Step>
+  <Step title="Set Allowed Apps">
+    In your [Project Settings](https://platform.aci.dev/project-settings), enable the apps you want your agent to access by adding them to the `Allowed Apps` list.
+    <Note>
+      For more details on how and why to set allowed apps, please refer to the [Agent](../core-concepts/agent) section.
+    </Note>
+  </Step>
+  <Step title="Link Accounts For Each App">
+    For each app you want to use, you'll need to link end-user (or your own) accounts. During account linking, you'll specify a `linked-account-owner-id` which you'll later provide when starting the MCP servers.
+    <Note>
+      For more details on how to link accounts and what `linked-account-owner-id` is, please refer to the [Linked Accounts](../core-concepts/linked-account) section.
+    </Note>
+
+  </Step>
+  <Step title="Install the Package">
+    ```bash
+    # Install uv if you don't have it already
+    curl -sSf https://install.pypa.io/get-pip.py | python3 -
+    pip install uv
+    ```
+  </Step>
+</Steps>
+
+
+
+## Integration with MCP Clients
+
+<CodeGroup>
+```json Cursor
+{
+  "mcpServers": {
+    "aipolabs-mcp-apps": {
+        "command": "uvx",
+        "args": ["aipolabs-mcp", "apps-server", "--apps", "<APP_1>,<APP_2>,...", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
+        "env": {
+            "AIPOLABS_ACI_API_KEY": "<AIPOLABS_ACI_API_KEY>"
+        }
+    }
+  }
+}
+```
+
+```bash Run Locally
+# Set API key
+export AIPOLABS_ACI_API_KEY=<YOUR_AIPOLABS_ACI_API_KEY>
+
+# Option 1: Run in stdio mode (default)
+uvx aipolabs-mcp apps-server  --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>
+
+# Option 2: Run in sse mode
+uvx aipolabs-mcp apps-server  --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --transport sse --port 8000
+```
+</CodeGroup>

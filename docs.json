@@ -38,6 +38,14 @@
               "sdk/metafunctions",
               "sdk/usecases"
             ]
+          },
+          {
+            "group": "MCP Servers",
+            "pages": [
+              "mcp-servers/introduction",
+              "mcp-servers/unified-server",
+              "mcp-servers/apps-server"
+            ]
           }
         ]
       },
