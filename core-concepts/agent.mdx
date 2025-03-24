@@ -1,0 +1,38 @@
+---
+title: 'Agent'
+description: 'An Agent is a logical actor within a project that accesses the platform'
+icon: "robot"
+---
+
+<Frame>
+  <img src="/images/platform/agents.png" alt="Agent Concept Illustration" />
+</Frame>
+
+- Represents a specific context or purpose for accessing the platform
+- Has its own API key for authentication
+- Can be restricted to use only specific `Apps` (select from the list of `Configured Apps`) within the `Project`
+- Can have `Custom Instructions` for how to (and how not to) use `Functions`
+- Allows for a natural multi-agent architecture within a single `Project`
+
+<Note>
+  Agents are designed to support multi-agent systems. Each agent can have its own set of allowed `Apps` and `Custom Instructions`, enabling specialized behaviors. For simple use cases, you can use the default agent created for your `Project`.
+</Note>
+
+
+## Agent Level Access Control
+For each `App` you configured, you can specify if you want to allow the agent to access that `App`.
+<Frame>
+  <img src="/images/platform/agent-allowed-apps.png" alt="Agent Concept Illustration" />
+</Frame>
+
+
+## Custom Instructions
+
+You can specify a `Custom Instruction` per `Function` for the `Agents` to follow. e.g.,:
+- `GMAIL__SEND_EMAIL`: "Don't send emails to people outside my organization"
+- `BRAVE_SEARCH__WEB_SEARCH`: "Only allowed to search the web for the following topics: [...]"
+- `GITHUB__STAR_REPOSITORY`: "Don't star repositories that are not related to AI"
+
+<Frame>
+  <img src="/images/platform/custom-instructions.png" alt="Agent Concept Illustration" />
+</Frame>

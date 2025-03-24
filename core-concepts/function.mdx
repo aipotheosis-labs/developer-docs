@@ -1,0 +1,27 @@
+---
+title: 'Function (Tool)'
+description: 'A Function is a callable operation that belongs to an App'
+icon: 'screwdriver-wrench'
+---
+
+
+Function in our platform is equivalent to the concept of `Function` or `Tool` in function/tool calling.
+Functions are logically grouped by the App they belong to.
+
+<Frame>
+  <img src="/images/platform/functions.png" alt="Function Concept Illustration" />
+</Frame>
+
+
+
+## Each Function:
+
+- Have a unique name across the platform, typically in the format `APP_NAME__FUNCTION_NAME` (e.g., "GITHUB__STAR_REPOSITORY")
+- Is compatible with function calling schema of OpenAI, Anthropic etc
+- Define the parameters they accept and the response they return
+- Handle the communication with external services
+- Inherit the authentication configuration from the App
+
+<Note>
+  Functions are the building blocks that AI agents use to interact with external services. Each function has a specific purpose, such as creating a GitHub repository or sending a Slack message.
+</Note>

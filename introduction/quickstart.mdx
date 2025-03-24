@@ -1,0 +1,195 @@
+---
+title: 'Quickstart'
+description: 'Power Your First AI Agent with ACI.dev'
+---
+
+This guide walk you through building an AI agent with function calling capability with ACI.dev
+
+# Sign up to the Platform
+- We are currently in a closed beta, so you'll need a signup code to register and log in to our [platform <Icon icon="up-right-from-square"/>](https://platform.aci.dev) .
+- We'll create a default `project` for you when you first log in to the platform.
+<Frame>
+  <img src="/images/platform/signup.png" />
+</Frame>
+
+# Configure Your First App for Your AI Agent to Use
+<Steps>
+  <Step title="Configure Github in App Store">
+    Navigate to `App Store` and find [GITHUB <Icon icon="up-right-from-square"/>](https://platform.aci.dev/apps/GITHUB).
+    Then click on `Configure App` button to set up the app for your project.
+    <Frame>
+      <img src="/images/platform/github_configure_app.png" alt="GitHub configuration" />
+    </Frame>
+  </Step>
+  <Step title="Link your Github account">
+    - Navigate to `App Configurations` and find [GITHUB App Configuration <Icon icon="up-right-from-square"/>](https://platform.aci.dev/appconfig/GITHUB). Then click on `Add Account` button to link your Github account.
+    <Note>
+      `linked account owner id` is the ID of the owner of the linked account. It's up to you to decide which ID to use—it can be the unique end-user ID from your system. Or If you're building an agent for yourself, you can choose any name you prefer. Later, you'll need to provide this `linked account owner id` in your code to execute functions on behalf of the user.
+    </Note>
+    <Frame>
+      <img src="/images/platform/github_link_account.png" />
+    </Frame>
+    - Click `Start OAuth2 Flow` button to start the OAuth2 flow and link your Github account under the project.
+  </Step>
+  <Step title="Allow Your Agents to Access GITHUB">
+    <Note>
+      - We took an opinionated approach to acommodate a multi-agent architecture. You can create multiple agents within the project, and each agent has its own API key and apps that they are allowed to use.
+      - We created a default agent for you when you first log in to the platform.
+    </Note>
+    Navigate to the project settings page: [Manage Project <Icon icon="up-right-from-square"/>](https://platform.aci.dev/project-setting). Then click the `Edit` button under `ALLOWED APPS` column of the agent to allow access to the `GITHUB` app.
+    <Frame>
+      <img src="/images/platform/agent_allowed_apps.png" />
+    </Frame>
+  </Step>
+  <Step title="Grab the API key">
+    Each `Agent` is assigned an API key, which you can use to send requests to our platform—either via raw HTTP requests or our SDK. Later, you'll need to include this API key in your code.
+    <Frame>
+      <img src="/images/platform/agent_api_key.png" />
+    </Frame>
+  </Step>
+</Steps>
+
+
+# Code Example
+The Aipolabs ACI Python SDK requires Python 3.10 or later.
+The example below uses `poetry` for package installation, but you can use `pip` or any other package manager of your choice.
+
+The full example code is available at the end of this guide.
+<Steps>
+    <Step title="Install Aipolabs ACI Python SDK">
+      - Install the Aipolabs ACI SDK
+      ```bash bash
+        poetry add aipolabs
+      ```
+      - To run the example, you'll also need to install other required packages.
+      ```bash bash
+        poetry add openai python-dotenv
+      ```
+    </Step>
+  <Step title="Provide the API key to the SDK">
+  You'll need both the AIPOLABS API key and the OpenAI API key to run the example in this section. Create a .env file in the root of your project and add the following:
+    ```bash .env
+      AIPOLABS_ACI_API_KEY=your_aipolabs_api_key
+      OPENAI_API_KEY=your_openai_api_key
+    ```
+  </Step>
+ 
+
+
+ <Step title="Create Aipolabs ACI Client and OpenAI Client">
+    ```python python 3.10+
+      from dotenv import load_dotenv
+      from aipolabs import ACI
+      from openai import OpenAI
+
+      load_dotenv()
+
+      aci = ACI()
+      openai = OpenAI()
+    ```
+  </Step>
+  <Step title="Get the Function Definition">
+    ```python python 3.10+
+      github_star_repo_function = aci.functions.get_definition("GITHUB__STAR_REPOSITORY")
+    ```
+  </Step>
+  <Step title="Append the Function Definition to the LLM Request">
+    ```python python 3.10+
+      response = openai.chat.completions.create(
+        model="gpt-4o-2024-08-06",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful assistant with access to a variety of tools.",
+            },
+            {
+                "role": "user",
+                "content": "Star the aipotheosis-labs/aipolabs-python githubrepository for me",
+            },
+        ],
+        tools=[github_star_repo_function],
+        tool_choice="required",  # force the model to generate a tool call for demo purposes
+      )
+    ```
+  </Step>
+  <Step title="Handle the Tool Call Response and Execute the Function via ACI.dev">
+   <Warning>
+    Replace `<LINKED_ACCOUNT_OWNER_ID>` with the `linked account owner id` you used when linking your Github account.
+   </Warning>
+    ```python python 3.10+ {11}
+      tool_call = (
+          response.choices[0].message.tool_calls[0]
+          if response.choices[0].message.tool_calls
+          else None
+      )
+
+      if tool_call:
+          result = aci.handle_function_call(
+              tool_call.function.name,
+              json.loads(tool_call.function.arguments),
+              linked_account_owner_id=<LINKED_ACCOUNT_OWNER_ID>
+          )
+    ```
+  </Step>
+  <Step title="Full Runnable Code">
+    Here is the complete runnable code for the example above, you can copy and paste it into a file and run it.
+    <Warning>
+      - Remember to provide api keys in the `.env` file.
+      - Replace `<LINKED_ACCOUNT_OWNER_ID>` with the `linked account owner id` you used when linking your Github account.
+    </Warning>
+    ```python python 3.10+ {42}
+      import json
+      from dotenv import load_dotenv
+      from openai import OpenAI
+      from aipolabs import ACI
+      load_dotenv()
+
+      openai = OpenAI()
+      aci = ACI()
+
+      def main() -> None:
+          # For a list of all supported apps and functions, please go to the platform.aci.dev
+          print("Getting function definition for GITHUB__STAR_REPOSITORY")
+          github_star_repo_function = aci.functions.get_definition("GITHUB__STAR_REPOSITORY")
+
+          print("Sending request to OpenAI")
+          response = openai.chat.completions.create(
+              model="gpt-4o-2024-08-06",
+              messages=[
+                  {
+                      "role": "system",
+                      "content": "You are a helpful assistant with access to a variety of tools.",
+                  },
+                  {
+                      "role": "user",
+                      "content": "Star the aipotheosis-labs/aipolabs-python github repository for me",
+                  },
+              ],
+              tools=[github_star_repo_function],
+              tool_choice="required",  # force the model to generate a tool call for demo purposes
+          )
+          tool_call = (
+              response.choices[0].message.tool_calls[0]
+              if response.choices[0].message.tool_calls
+              else None
+          )
+
+          if tool_call:
+              print("Handling function call")
+              result = aci.handle_function_call(
+                  tool_call.function.name,
+                  json.loads(tool_call.function.arguments),
+                  linked_account_owner_id=<LINKED_ACCOUNT_OWNER_ID>,
+              )
+              print(result)
+
+
+      if __name__ == "__main__":
+          main()
+
+    ```
+  </Step>
+</Steps>
+
+# Advanced Usage
+For more advanced usage, please refer to the examples in our [Python SDK Repository <Icon icon="up-right-from-square"/>](https://github.com/aipotheosis-labs/aipolabs-python/blob/main/examples/README.md).

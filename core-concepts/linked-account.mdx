@@ -1,0 +1,49 @@
+---
+title: 'Linked Account'
+description: 'A Linked Account represents a connection to an external service (App) for a specific end-user'
+icon: 'user'
+---
+
+
+- Associates authentication credentials with a specific `App` in your `Project`
+- Stores security credentials (OAuth tokens, API keys, etc.) securely
+- Enables your agents to perform actions on behalf of specific end-users
+- Can be enabled, disabled, or deleted as needed
+- Is identified by a unique combination of `Project`, `App`, and `Linked Account Owner ID`
+
+
+<Frame>
+  <img src="/images/platform/link-account.png" alt="Linked Account Concept Illustration" />
+</Frame>
+
+
+## What is Linked Account Owner ID?
+
+- The `Linked Account Owner ID` is a unique identifier for the end-user that is used to link the `Linked Account` to the end-user.
+- You determine the `Linked Account Owner ID` value. It can be a user ID from your system, an email address, or any other identifier that helps you track which end-user the linked account belongs to. 
+- When executing functions, you must provide this ID so the platform knows which credentials to use. It enables your agents to act on behalf of specific users when executing functions.
+
+
+<Note>
+Note that the `Linked Account Owner ID` itself can NOT uniquely identify a `Linked Account`.
+A single `Linked Account Owner ID` can be associated with multiple `Linked Accounts`, for example, one account for `GITHUB` and one account for `GMAIL`, both linked to the same end-user.
+
+However, within a single `App`, the `Linked Account Owner ID` must be unique.
+</Note>
+
+
+
+
+## If Your Agentic Application Have Multiple End-Users
+
+- If your agentic application have multiple end-users, you can create a `Linked Account` for each end-user per `App` (configured).
+- Each `Linked Account` then represents a specific end-user's connection/authentication to a specific `App`.
+- Ideally, you'll need to create a `Linked Account` for each end-user per `App`. (And use the same `Linked Account Owner ID` for the same end-user.)
+
+## If Your Agentic Application Have a Single End-User
+
+If your agentic application have a single end-user, or you are building the agent for your own use, you probably only need a single `Linked Account` per `App`, and in that case, you can use any value for the `Linked Account Owner ID`.
+
+<Note>
+  When you link an account (like connecting to GitHub via OAuth2, or Brave Search via API Key), the platform securely stores the credentials needed to access that service. Your agents can then use these credentials to perform actions on behalf of that end-user.
+</Note>

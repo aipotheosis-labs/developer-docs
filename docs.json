@@ -16,8 +16,19 @@
           {
             "group": "Introduction",
             "pages": [
-              "overview",
-              "quickstart"
+              "introduction/overview",
+              "introduction/quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "core-concepts/app",
+              "core-concepts/app-configuration",
+              "core-concepts/function",
+              "core-concepts/linked-account",
+              "core-concepts/project",
+              "core-concepts/agent"
             ]
           },
           {
@@ -26,6 +37,14 @@
               "sdk/intro",
               "sdk/metafunctions",
               "sdk/usecases"
+            ]
+          },
+          {
+            "group": "MCP Servers",
+            "pages": [
+              "mcp-servers/introduction",
+              "mcp-servers/unified-server",
+              "mcp-servers/apps-server"
             ]
           }
         ]
