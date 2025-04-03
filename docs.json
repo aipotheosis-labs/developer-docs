@@ -53,9 +53,9 @@
         "tab": "API Reference",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Introduction",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/overview"
             ]
           },
           {
