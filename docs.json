@@ -50,6 +50,17 @@
         ]
       },
       {
+        "tab": "Agent Examples",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "agent-examples/overview"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "API Reference",
         "groups": [
           {
@@ -96,17 +107,6 @@
                   "api-reference/linked-accounts/delete-linked-account"
                 ]
               }
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Agent Examples",
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "agent-examples/overview"
             ]
           }
         ]
