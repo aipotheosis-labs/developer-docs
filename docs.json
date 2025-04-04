@@ -99,6 +99,17 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Agent Examples",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "agent-examples/overview"
+            ]
+          }
+        ]
       }
     ],
     "global": {
