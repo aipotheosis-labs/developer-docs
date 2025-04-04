@@ -1,14 +1,18 @@
 ---
-title: Use Cases
+title: Tool Use Patterns
 description: Different ways to use the Aipolabs ACI SDK
 icon: 'text-size'
 ---
 
 You can give your AI agent different levels of tool-use autonomy through the meta functions:
 
-- **Pre-planned**: Provide the specific functions to be used by an LLM.
-- **Semi Autonomous**: Provide all but the AipolabsExecuteFunction metafunction to the LLM.
-- **Fully Autonomous**: Provide all 4 meta functions to the LLM.
+- **Pattern 1: Pre-planned Tools**
+    - Provide the specific functions (tools) to be used by an LLM.
+- **Pattern 2: Dynamic Tool Discovery and Execution**
+    - **2.1: Tool List Expansion**
+        - Provide all but the `AipolabsExecuteFunction` meta function (tool) to the LLM.
+    - **2.2: Tool Definition as Text Context Approach**
+        - Provide all 4 meta functions (tools) to the LLM.
 
 ## Pre-planned
 
@@ -44,7 +48,7 @@ This is the most straright forward use case. You can directly find the functions
             )
 ```
 
-## Semi Autonomous
+## Dynamic Tool Discovery and Execution With Tool List Expansion
 
 In this use case, the tools list provided to LLM API calls changes according to the function definitions retrieved by the agent from the Aipolabs ACI using the provided metafunctions.
 
@@ -100,9 +104,9 @@ if tool_call:
     )
 ```
 
-For a full example, [see here](https://github.com/aipotheosis-labs/aipolabs-python/blob/main/examples/agent_with_dynamic_function_discovery_and_dynamic_tools.py).
+For a full example, [see here <Icon icon="up-right-from-square"/>](https://github.com/aipotheosis-labs/aipolabs-agents/blob/main/examples/openai/agent_with_dynamic_tool_discovery_pattern_1.py).
 
-## Fully Autonomous
+## Dynamic Tool Discovery and Execution With Tool Definition as Text Context
 
 In this use case, the tools list provided to the LLM is static, all 4 metafunctions from the Aipolabs ACI are included.
 
@@ -155,4 +159,4 @@ if tool_call:
     )
 ```
 
-For a full example, [see here](https://github.com/aipotheosis-labs/aipolabs-python/blob/main/examples/agent_with_dynamic_function_discovery_and_fixed_tools.py).
+For a full example, [see here <Icon icon="up-right-from-square"/>](https://github.com/aipotheosis-labs/aipolabs-agents/blob/main/examples/openai/agent_with_dynamic_tool_discovery_pattern_2.py).
