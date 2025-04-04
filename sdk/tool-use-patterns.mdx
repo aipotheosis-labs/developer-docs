@@ -50,7 +50,7 @@ This is the most straright forward use case. You can directly find the functions
 
 ## Dynamic Tool Discovery and Execution With Tool List Expansion
 
-In this use case, the tools list provided to LLM API calls changes according to the function definitions retrieved by the agent from the Aipolabs ACI using the provided metafunctions.
+In this use case, the tools list provided to LLM API calls changes according to the function definitions retrieved by the agent from the Aipolabs ACI using the provided meta functions (tools).
 
 The retrieved function definitions are appended to the available tools list for LLMs to decide when and how to use it in subsequent LLM calls. This leverages the ability of many LLMs to 100% enforce adherence of function-call outputs to the provided definition, while still offering the flexibility to essentially access as many different tools as needed by the LLM-powered agent.
 
@@ -108,11 +108,11 @@ For a full example, [see here <Icon icon="up-right-from-square"/>](https://githu
 
 ## Dynamic Tool Discovery and Execution With Tool Definition as Text Context
 
-In this use case, the tools list provided to the LLM is static, all 4 metafunctions from the Aipolabs ACI are included.
+In this use case, the tools list provided to the LLM is static, all 4 meta functions (tools) from the Aipolabs ACI are included.
 
 The difference between this and the semi autonomous use case is that retrieved function definitions are provided to the LLM directly in the context window. The LLM then has to decide whether to call the ACIExecuteFunction metafunction to actually execute an API call.
 
-By using the metafunctions this way, the developer does not have to manage the tools list, but the accuracy of tool use can decrease.
+By using the meta functions (tools) this way, the developer does not have to manage the tools list, but the accuracy of tool use can decrease.
 
 **Example tools list provided to LLM**
 ```
