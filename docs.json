@@ -116,7 +116,7 @@
       "anchors": [
         {
           "anchor": "GitHub",
-          "href": "https://github.com/aipotheosis-labs/aipolabs-python",
+          "href": "https://github.com/aipotheosis-labs",
           "icon": "github"
         },
         {
@@ -147,7 +147,7 @@
   "footer": {
     "socials": {
       "x": "https://x.com/AipoLabs",
-      "github": "https://github.com/aipotheosis-labs/aipolabs-python",
+      "github": "https://github.com/aipotheosis-labs",
       "linkedin": "https://www.linkedin.com/company/aipotheosis-labs-aipolabs/",
       "discord": "https://discord.com/invite/UU2XAnfHJh"
     }
