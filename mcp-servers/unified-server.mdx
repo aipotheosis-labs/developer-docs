@@ -78,11 +78,11 @@ Before using the `Unified MCP Server`, you need to complete several setup steps 
 ```json Cursor
 {
   "mcpServers": {
-    "aipolabs-mcp-unified": {
+    "aci-mcp-unified": {
       "command": "uvx",
-      "args": ["aipolabs-mcp", "unified-server", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
+      "args": ["aci-mcp", "unified-server", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
       "env": {
-        "AIPOLABS_ACI_API_KEY": "<YOUR_AIPOLABS_ACI_API_KEY>"
+        "ACI_API_KEY": "<YOUR_ACI_API_KEY>"
       }
     }
   }
@@ -91,7 +91,7 @@ Before using the `Unified MCP Server`, you need to complete several setup steps 
 
 ```bash Run Locally
 # Set API key
-export AIPOLABS_ACI_API_KEY=<YOUR_AIPOLABS_ACI_API_KEY>
+export ACI_API_KEY=<YOUR_ACI_API_KEY>
 
 # Option 1: Run in stdio mode (default)
 uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>

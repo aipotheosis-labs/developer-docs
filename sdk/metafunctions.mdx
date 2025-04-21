@@ -3,13 +3,13 @@ title: Meta Functions (Tools)
 description: Designed with an LLM-centric approach
 icon: 'atom'
 ---
-Beyond the standard wrapper around the Aipolabs ACI APIs,, the SDK provides a suite of features and helper functions to make it easier and more seamless to use functions in LLM powered agentic applications. This is our vision and the recommended way of trying out the SDK in agentic applications.
+Beyond the standard wrapper around the ACI.dev APIs,, the SDK provides a suite of features and helper functions to make it easier and more seamless to use functions in LLM powered agentic applications. This is our vision and the recommended way of trying out the SDK in agentic applications.
 
 One key feature is the set of meta function schemas we provide.
 Essentially, they are just the json schema version of some of the backend APIs of ACI.dev. They are provided so that your LLM/Agent can utlize some of the features of ACI.dev directly via [function (tool) calling <Icon icon="up-right-from-square"/>](https://platform.openai.com/docs/guides/function-calling).
 
 ```
-from aipolabs import meta_functions
+from aci import meta_functions
 
 # meta functions
 tools = [
