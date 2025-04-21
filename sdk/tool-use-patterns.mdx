@@ -1,6 +1,6 @@
 ---
-title: Tool Use Patterns
-description: Different ways to use the Aipolabs ACI SDK
+title: Function (Tool) Use Patterns
+description: Different ways to use the ACI.dev SDK
 icon: 'text-size'
 ---
 
@@ -10,9 +10,9 @@ You can give your AI agent different levels of tool-use autonomy through the met
     - Provide the specific functions (tools) to be used by an LLM.
 - **Pattern 2: Dynamic Tool Discovery and Execution**
     - **2.1: Tool List Expansion**
-        - Provide all but the `AipolabsExecuteFunction` meta function (tool) to the LLM.
+        - Provide all but the `ACIExecuteFunction` meta function (tool) to the LLM.
     - **2.2: Tool Definition as Text Context Approach**
-        - Provide all 4 meta functions (tools) to the LLM.
+        - Provide all meta functions (tools) to the LLM.
 
 ## Pre-planned
 
@@ -29,7 +29,7 @@ This is the most straright forward use case. You can directly find the functions
             },
             {
                 "role": "user",
-                "content": "What is aipolabs ACI?",
+                "content": "What is ACI.dev by Aipolabs?",
             },
         ],
         tools=[brave_search_function_definition],
@@ -50,7 +50,7 @@ This is the most straright forward use case. You can directly find the functions
 
 ## Dynamic Tool Discovery and Execution With Tool List Expansion
 
-In this use case, the tools list provided to LLM API calls changes according to the function definitions retrieved by the agent from the Aipolabs ACI using the provided meta functions (tools).
+In this use case, the tools list provided to LLM API calls changes according to the function definitions retrieved by the agent from the ACI.dev using the provided meta functions (tools).
 
 The retrieved function definitions are appended to the available tools list for LLMs to decide when and how to use it in subsequent LLM calls. This leverages the ability of many LLMs to 100% enforce adherence of function-call outputs to the provided definition, while still offering the flexibility to essentially access as many different tools as needed by the LLM-powered agent.
 
@@ -83,7 +83,7 @@ response = openai.chat.completions.create(
         },
         {
             "role": "user",
-            "content": "Can you search online for some information about aipolabs ACI? Use whichever search tool you find most suitable for the task via the ACI meta functions.",
+            "content": "Can you search online for some information about ACI.dev? Use whichever search tool you find most suitable for the task via the ACI meta functions.",
         },
     ]
     + chat_history,
@@ -104,11 +104,11 @@ if tool_call:
     )
 ```
 
-For a full example, [see here <Icon icon="up-right-from-square"/>](https://github.com/aipotheosis-labs/aipolabs-agents/blob/main/examples/openai/agent_with_dynamic_tool_discovery_pattern_1.py).
+For a full example, [see here <Icon icon="up-right-from-square"/>](https://github.com/aipotheosis-labs/aci-agents/blob/main/examples/openai/agent_with_dynamic_tool_discovery_pattern_1.py).
 
 ## Dynamic Tool Discovery and Execution With Tool Definition as Text Context
 
-In this use case, the tools list provided to the LLM is static, all 4 meta functions (tools) from the Aipolabs ACI are included.
+In this use case, the tools list provided to the LLM is static, all meta functions (tools) from the ACI.dev are included.
 
 The difference between this and the semi autonomous use case is that retrieved function definitions are provided to the LLM directly in the context window. The LLM then has to decide whether to call the ACIExecuteFunction metafunction to actually execute an API call.
 
@@ -135,7 +135,7 @@ response = openai.chat.completions.create(
         },
         {
             "role": "user",
-            "content": "Can you search online for some information about aipolabs ACI? Use whichever search tool you find most suitable for the task via the ACI meta functions.",
+            "content": "Can you search online for some information about ACI.dev? Use whichever search tool you find most suitable for the task via the ACI meta functions.",
         },
     ]
     + chat_history,
@@ -159,4 +159,4 @@ if tool_call:
     )
 ```
 
-For a full example, [see here <Icon icon="up-right-from-square"/>](https://github.com/aipotheosis-labs/aipolabs-agents/blob/main/examples/openai/agent_with_dynamic_tool_discovery_pattern_2.py).
+For a full example, [see here <Icon icon="up-right-from-square"/>](https://github.com/aipotheosis-labs/aci-agents/blob/main/examples/openai/agent_with_dynamic_tool_discovery_pattern_2.py).

@@ -36,7 +36,8 @@
             "pages": [
               "sdk/intro",
               "sdk/metafunctions",
-              "sdk/tool-use-patterns"
+              "sdk/tool-use-patterns",
+              "sdk/custom-functions"
             ]
           },
           {
@@ -116,7 +117,7 @@
       "anchors": [
         {
           "anchor": "GitHub",
-          "href": "https://github.com/aipotheosis-labs",
+          "href": "https://github.com/aipotheosis-labs/aci",
           "icon": "github"
         },
         {

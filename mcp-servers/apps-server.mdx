@@ -70,11 +70,11 @@ Before using the `Apps MCP Server`, you need to complete several setup steps on 
 ```json Cursor
 {
   "mcpServers": {
-    "aipolabs-mcp-apps": {
+    "aci-mcp-apps": {
         "command": "uvx",
-        "args": ["aipolabs-mcp", "apps-server", "--apps", "<APP_1>,<APP_2>,...", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
+        "args": ["aci-mcp", "apps-server", "--apps", "<APP_1>,<APP_2>,...", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
         "env": {
-            "AIPOLABS_ACI_API_KEY": "<AIPOLABS_ACI_API_KEY>"
+            "ACI_API_KEY": "<ACI_API_KEY>"
         }
     }
   }
@@ -83,12 +83,12 @@ Before using the `Apps MCP Server`, you need to complete several setup steps on 
 
 ```bash Run Locally
 # Set API key
-export AIPOLABS_ACI_API_KEY=<YOUR_AIPOLABS_ACI_API_KEY>
+export ACI_API_KEY=<YOUR_ACI_API_KEY>
 
 # Option 1: Run in stdio mode (default)
-uvx aipolabs-mcp apps-server  --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>
+uvx aci-mcp apps-server  --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>
 
 # Option 2: Run in sse mode
-uvx aipolabs-mcp apps-server  --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --transport sse --port 8000
+uvx aci-mcp apps-server  --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --transport sse --port 8000
 ```
 </CodeGroup>
