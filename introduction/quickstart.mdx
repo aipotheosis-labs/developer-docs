@@ -6,11 +6,8 @@ description: 'Power Your First AI Agent with ACI.dev'
 This guide walk you through building an AI agent with function calling capability with ACI.dev
 
 # Sign up to the Platform
-- We are currently in a closed beta, so you'll need a signup code to register and log in to our [platform <Icon icon="up-right-from-square"/>](https://platform.aci.dev) .
-- We'll create a default `project` for you when you first log in to the platform.
-<Frame>
-  <img src="/images/platform/signup.png" />
-</Frame>
+- [platform.aci.dev <Icon icon="up-right-from-square"/>](https://platform.aci.dev) .
+- We'll create a default `project` and default `agent` for you when you first log in to the platform.
 
 # Configure Your First App for Your AI Agent to Use
 <Steps>
@@ -51,35 +48,35 @@ This guide walk you through building an AI agent with function calling capabilit
 
 
 # Code Example
-The Aipolabs ACI Python SDK requires Python 3.10 or later.
-The example below uses `poetry` for package installation, but you can use `pip` or any other package manager of your choice.
+The ACI Python SDK requires Python 3.10+.
+The example below uses `uv` for package installation, but you can use `pip` or any other package manager of your choice.
 
 The full example code is available at the end of this guide.
 <Steps>
-    <Step title="Install Aipolabs ACI Python SDK">
-      - Install the Aipolabs ACI SDK
+    <Step title="Install ACI Python SDK">
+      - Install the ACI Python SDK
       ```bash bash
-        poetry add aipolabs
+        uv add aci-sdk
       ```
       - To run the example, you'll also need to install other required packages.
       ```bash bash
-        poetry add openai python-dotenv
+        uv add openai python-dotenv
       ```
     </Step>
   <Step title="Provide the API key to the SDK">
-  You'll need both the AIPOLABS API key and the OpenAI API key to run the example in this section. Create a .env file in the root of your project and add the following:
+  You'll need both the ACI API key and the OpenAI API key to run the example in this section. Create a .env file in the root of your project and add the following:
     ```bash .env
-      AIPOLABS_ACI_API_KEY=your_aipolabs_api_key
+      ACI_API_KEY=your_aci_api_key
       OPENAI_API_KEY=your_openai_api_key
     ```
   </Step>
  
 
 
- <Step title="Create Aipolabs ACI Client and OpenAI Client">
+ <Step title="Create ACI Client and OpenAI Client">
     ```python python 3.10+
       from dotenv import load_dotenv
-      from aipolabs import ACI
+      from aci import ACI
       from openai import OpenAI
 
       load_dotenv()
@@ -104,7 +101,7 @@ The full example code is available at the end of this guide.
             },
             {
                 "role": "user",
-                "content": "Star the aipotheosis-labs/aci-python-sdk githubrepository for me",
+                "content": "Star the aipotheosis-labs/aci githubrepository for me",
             },
         ],
         tools=[github_star_repo_function],
@@ -141,7 +138,7 @@ The full example code is available at the end of this guide.
       import json
       from dotenv import load_dotenv
       from openai import OpenAI
-      from aipolabs import ACI
+      from aci import ACI
       load_dotenv()
 
       openai = OpenAI()
@@ -162,7 +159,7 @@ The full example code is available at the end of this guide.
                   },
                   {
                       "role": "user",
-                      "content": "Star the aipotheosis-labs/aci-python-sdk github repository for me",
+                      "content": "Star the aipotheosis-labs/aci github repository for me",
                   },
               ],
               tools=[github_star_repo_function],
@@ -192,4 +189,4 @@ The full example code is available at the end of this guide.
 </Steps>
 
 # Advanced Usage
-For more advanced usage, please refer to the examples in our [Python SDK Repository <Icon icon="up-right-from-square"/>](https://github.com/aipotheosis-labs/aci-python-sdk/blob/main/examples/README.md).
+For more advanced usage, please refer to the examples in our [ACI Agents Repository <Icon icon="up-right-from-square"/>](https://github.com/aipotheosis-labs/aci-agents/tree/main).
