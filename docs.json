@@ -36,7 +36,8 @@
             "pages": [
               "sdk/intro",
               "sdk/metafunctions",
-              "sdk/tool-use-patterns"
+              "sdk/tool-use-patterns",
+              "sdk/custom-functions"
             ]
           },
           {
