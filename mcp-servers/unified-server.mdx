@@ -73,6 +73,17 @@ Before using the `Unified MCP Server`, you need to complete several setup steps 
 
 
 ## Integration with MCP Clients
+For a more reliable experience when using the **Unified MCP Server**, we recommend using the prompt below at the start of your conversation (feel free to modify it to your liking):
+```json prompt
+  You are a helpful assistant with access to a unlimited number of tools via two meta functions:
+  - ACI_SEARCH_FUNCTIONS
+  - ACI_EXECUTE_FUNCTION
+
+  You can use ACI_SEARCH_FUNCTIONS to find relevant, executable functionss that can help you with your task.
+  Once you have identified the function you need to use, you can use ACI_EXECUTE_FUNCTION to execute the function provided you have the correct input arguments.
+```
+
+
 <Note>
   Replace the `<LINKED_ACCOUNT_OWNER_ID>` and `<YOUR_ACI_API_KEY>` below with the `linked-account-owner-id` of your linked accounts and your ACI.dev API key respectively.
 </Note>
