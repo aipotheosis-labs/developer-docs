@@ -65,38 +65,67 @@ Before using the `Apps MCP Server`, you need to complete several setup steps on 
 
 
 ## Integration with MCP Clients
-
 <Note>
-  Make sure you hit the refresh button on the Cursor MCP settings page after entering your own API key.
-  <Frame>
-    <img src="/images/cursor-unified-mcp.png" alt="Cursor Unified MCP" />
-  </Frame>
+  - Replace the `<LINKED_ACCOUNT_OWNER_ID>` and `<YOUR_ACI_API_KEY>` below with the `linked-account-owner-id` of your linked accounts and your ACI.dev API key respectively.
+  - Replace `<APP_1>,<APP_2>,...` with the apps you set as allowed for your agent in the [Project Setting <Icon icon="up-right-from-square"/>](https://platform.aci.dev/project-setting).
 </Note>
 
+<AccordionGroup>
 
-<CodeGroup>
-```json Cursor
-{
-  "mcpServers": {
-    "aci-mcp-apps": {
-        "command": "uvx",
-        "args": ["aci-mcp", "apps-server", "--apps", "<APP_1>,<APP_2>,...", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
-        "env": {
-            "ACI_API_KEY": "<ACI_API_KEY>"
+  <Accordion title="Cursor & Windsurf" icon="code">
+
+    <Note>
+      Make sure you hit the refresh button on the MCP settings page after entering your own API key and Owner ID.
+      <Frame>
+        <img src="/images/cursor-unified-mcp.png" alt="Cursor Unified MCP" />
+      </Frame>
+    </Note>
+
+    ```json mcp.json
+    {
+      "mcpServers": {
+        "aci-mcp-apps": {
+            "command": "uvx",
+            "args": ["aci-mcp", "apps-server", "--apps", "<APP_1>,<APP_2>,...", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
+            "env": {
+                "ACI_API_KEY": "<ACI_API_KEY>"
+            }
         }
+      }
     }
-  }
-}
-```
+    ```  
+  </Accordion>
 
-```bash Run Locally
-# Set API key
-export ACI_API_KEY=<YOUR_ACI_API_KEY>
+  <Accordion title="Claude Desktop" icon="message-bot">
+    <Note>
+    Make sure to restart the Claude Desktop app after adding the MCP server configuration.
+    </Note>
 
-# Option 1: Run in stdio mode (default)
-uvx aci-mcp apps-server  --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>
+    ```json claude_desktop_config.json
+    {
+      "mcpServers": {
+        "aci-mcp-unified": {
+          "command": "bash",
+          "args": [
+            "-c",
+            "ACI_API_KEY=<YOUR_ACI_API_KEY> uvx aci-mcp apps-server --apps <APP_1>,<APP_2>,... --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>"
+          ]
+        }
+      }
+    }
+    ``` 
+  </Accordion>
 
-# Option 2: Run in sse mode
-uvx aci-mcp apps-server  --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --transport sse --port 8000
-```
-</CodeGroup>
+  <Accordion title="Running Locally" icon="rectangle-terminal">
+    ```bash terminal
+    # Set API key
+    export ACI_API_KEY=<YOUR_ACI_API_KEY>
+
+    # Option 1: Run in stdio mode (default)
+    uvx aci-mcp apps-server --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>
+
+    # Option 2: Run in sse mode
+    uvx aci-mcp apps-server --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --transport sse --port 8000
+    ```
+  </Accordion>
+</AccordionGroup>

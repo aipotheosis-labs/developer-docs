@@ -73,37 +73,77 @@ Before using the `Unified MCP Server`, you need to complete several setup steps 
 
 
 ## Integration with MCP Clients
+For a more reliable experience when using the **Unified MCP Server**, we recommend using the prompt below at the start of your conversation (feel free to modify it to your liking):
+```json prompt
+  You are a helpful assistant with access to a unlimited number of tools via two meta functions:
+  - ACI_SEARCH_FUNCTIONS
+  - ACI_EXECUTE_FUNCTION
+
+  You can use ACI_SEARCH_FUNCTIONS to find relevant, executable functionss that can help you with your task.
+  Once you have identified the function you need to use, you can use ACI_EXECUTE_FUNCTION to execute the function provided you have the correct input arguments.
+```
+
 
 <Note>
-  Make sure you hit the refresh button on the Cursor MCP settings page after entering your own API key.
-  <Frame>
-    <img src="/images/cursor-unified-mcp.png" alt="Cursor Unified MCP" />
-  </Frame>
+  Replace the `<LINKED_ACCOUNT_OWNER_ID>` and `<YOUR_ACI_API_KEY>` below with the `linked-account-owner-id` of your linked accounts and your ACI.dev API key respectively.
 </Note>
 
-<CodeGroup>
-```json Cursor
-{
-  "mcpServers": {
-    "aci-mcp-unified": {
-      "command": "uvx",
-      "args": ["aci-mcp", "unified-server", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
-      "env": {
-        "ACI_API_KEY": "<YOUR_ACI_API_KEY>"
+<AccordionGroup>
+
+  <Accordion title="Cursor & Windsurf" icon="code">
+
+    <Note>
+      Make sure you hit the refresh button on the MCP settings page after entering your own API key and Owner ID.
+      <Frame>
+        <img src="/images/cursor-unified-mcp.png" alt="Cursor Unified MCP" />
+      </Frame>
+    </Note>
+
+    ```json mcp.json
+    {
+      "mcpServers": {
+        "aci-mcp-unified": {
+          "command": "uvx",
+          "args": ["aci-mcp", "unified-server", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
+          "env": {
+            "ACI_API_KEY": "<YOUR_ACI_API_KEY>"
+          }
+        }
       }
     }
-  }
-}
-```
+    ```  
+  </Accordion>
 
-```bash Run Locally
-# Set API key
-export ACI_API_KEY=<YOUR_ACI_API_KEY>
+  <Accordion title="Claude Desktop" icon="message-bot">
+    <Note>
+    Make sure to restart the Claude Desktop app after adding the MCP server configuration.
+    </Note>
 
-# Option 1: Run in stdio mode (default)
-uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>
+    ```json claude_desktop_config.json
+    {
+      "mcpServers": {
+        "aci-mcp-unified": {
+          "command": "bash",
+          "args": [
+            "-c",
+            "ACI_API_KEY=<YOUR_ACI_API_KEY> uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>"
+          ]
+        }
+      }
+    }
+    ``` 
+  </Accordion>
 
-# Option 2: Run in sse mode
-uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --transport sse --port 8000
-```
-</CodeGroup>
+  <Accordion title="Running Locally" icon="rectangle-terminal">
+    ```bash terminal
+    # Set API key
+    export ACI_API_KEY=<YOUR_ACI_API_KEY>
+
+    # Option 1: Run in stdio mode (default)
+    uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>
+
+    # Option 2: Run in sse mode
+    uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --transport sse --port 8000
+    ```
+  </Accordion>
+</AccordionGroup>
