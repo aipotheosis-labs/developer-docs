@@ -56,18 +56,18 @@ The full example code is available at the end of this guide.
     <Step title="Install ACI Python SDK">
       - Install the ACI Python SDK
       ```bash bash
-        uv add aci-sdk
+      uv add aci-sdk
       ```
       - To run the example, you'll also need to install other required packages.
       ```bash bash
-        uv add openai python-dotenv
+      uv add openai python-dotenv
       ```
     </Step>
   <Step title="Provide the API key to the SDK">
   You'll need both the ACI API key and the OpenAI API key to run the example in this section. Create a .env file in the root of your project and add the following:
     ```bash .env
-      ACI_API_KEY=your_aci_api_key
-      OPENAI_API_KEY=your_openai_api_key
+    ACI_API_KEY=your_aci_api_key
+    OPENAI_API_KEY=your_openai_api_key
     ```
   </Step>
  
@@ -75,38 +75,38 @@ The full example code is available at the end of this guide.
 
  <Step title="Create ACI Client and OpenAI Client">
     ```python python 3.10+
-      from dotenv import load_dotenv
-      from aci import ACI
-      from openai import OpenAI
+    from dotenv import load_dotenv
+    from aci import ACI
+    from openai import OpenAI
 
-      load_dotenv()
+    load_dotenv()
 
-      aci = ACI()
-      openai = OpenAI()
+    aci = ACI()
+    openai = OpenAI()
     ```
   </Step>
   <Step title="Get the Function Definition">
     ```python python 3.10+
-      github_star_repo_function = aci.functions.get_definition("GITHUB__STAR_REPOSITORY")
+    github_star_repo_function = aci.functions.get_definition("GITHUB__STAR_REPOSITORY")
     ```
   </Step>
   <Step title="Append the Function Definition to the LLM Request">
     ```python python 3.10+
-      response = openai.chat.completions.create(
-        model="gpt-4o-2024-08-06",
-        messages=[
-            {
-                "role": "system",
-                "content": "You are a helpful assistant with access to a variety of tools.",
-            },
-            {
-                "role": "user",
-                "content": "Star the aipotheosis-labs/aci githubrepository for me",
-            },
-        ],
-        tools=[github_star_repo_function],
-        tool_choice="required",  # force the model to generate a tool call for demo purposes
-      )
+    response = openai.chat.completions.create(
+      model="gpt-4o-2024-08-06",
+      messages=[
+          {
+              "role": "system",
+              "content": "You are a helpful assistant with access to a variety of tools.",
+          },
+          {
+              "role": "user",
+              "content": "Star the aipotheosis-labs/aci githubrepository for me",
+          },
+      ],
+      tools=[github_star_repo_function],
+      tool_choice="required",  # force the model to generate a tool call for demo purposes
+    )
     ```
   </Step>
   <Step title="Handle the Tool Call Response and Execute the Function via ACI.dev">
@@ -114,18 +114,18 @@ The full example code is available at the end of this guide.
     Replace `<LINKED_ACCOUNT_OWNER_ID>` with the `linked account owner id` you used when linking your Github account.
    </Warning>
     ```python python 3.10+ {11}
-      tool_call = (
-          response.choices[0].message.tool_calls[0]
-          if response.choices[0].message.tool_calls
-          else None
-      )
+    tool_call = (
+        response.choices[0].message.tool_calls[0]
+        if response.choices[0].message.tool_calls
+        else None
+    )
 
-      if tool_call:
-          result = aci.handle_function_call(
-              tool_call.function.name,
-              json.loads(tool_call.function.arguments),
-              linked_account_owner_id=<LINKED_ACCOUNT_OWNER_ID>
-          )
+    if tool_call:
+        result = aci.handle_function_call(
+            tool_call.function.name,
+            json.loads(tool_call.function.arguments),
+            linked_account_owner_id=<LINKED_ACCOUNT_OWNER_ID>
+        )
     ```
   </Step>
   <Step title="Full Runnable Code">
@@ -135,54 +135,54 @@ The full example code is available at the end of this guide.
       - Replace `<LINKED_ACCOUNT_OWNER_ID>` with the `linked account owner id` you used when linking your Github account.
     </Warning>
     ```python python 3.10+ {42}
-      import json
-      from dotenv import load_dotenv
-      from openai import OpenAI
-      from aci import ACI
-      load_dotenv()
+    import json
+    from dotenv import load_dotenv
+    from openai import OpenAI
+    from aci import ACI
+    load_dotenv()
 
-      openai = OpenAI()
-      aci = ACI()
+    openai = OpenAI()
+    aci = ACI()
 
-      def main() -> None:
-          # For a list of all supported apps and functions, please go to the platform.aci.dev
-          print("Getting function definition for GITHUB__STAR_REPOSITORY")
-          github_star_repo_function = aci.functions.get_definition("GITHUB__STAR_REPOSITORY")
+    def main() -> None:
+        # For a list of all supported apps and functions, please go to the platform.aci.dev
+        print("Getting function definition for GITHUB__STAR_REPOSITORY")
+        github_star_repo_function = aci.functions.get_definition("GITHUB__STAR_REPOSITORY")
 
-          print("Sending request to OpenAI")
-          response = openai.chat.completions.create(
-              model="gpt-4o-2024-08-06",
-              messages=[
-                  {
-                      "role": "system",
-                      "content": "You are a helpful assistant with access to a variety of tools.",
-                  },
-                  {
-                      "role": "user",
-                      "content": "Star the aipotheosis-labs/aci github repository for me",
-                  },
-              ],
-              tools=[github_star_repo_function],
-              tool_choice="required",  # force the model to generate a tool call for demo purposes
-          )
-          tool_call = (
-              response.choices[0].message.tool_calls[0]
-              if response.choices[0].message.tool_calls
-              else None
-          )
+        print("Sending request to OpenAI")
+        response = openai.chat.completions.create(
+            model="gpt-4o-2024-08-06",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant with access to a variety of tools.",
+                },
+                {
+                    "role": "user",
+                    "content": "Star the aipotheosis-labs/aci github repository for me",
+                },
+            ],
+            tools=[github_star_repo_function],
+            tool_choice="required",  # force the model to generate a tool call for demo purposes
+        )
+        tool_call = (
+            response.choices[0].message.tool_calls[0]
+            if response.choices[0].message.tool_calls
+            else None
+        )
 
-          if tool_call:
-              print("Handling function call")
-              result = aci.handle_function_call(
-                  tool_call.function.name,
-                  json.loads(tool_call.function.arguments),
-                  linked_account_owner_id=<LINKED_ACCOUNT_OWNER_ID>,
-              )
-              print(result)
+        if tool_call:
+            print("Handling function call")
+            result = aci.handle_function_call(
+                tool_call.function.name,
+                json.loads(tool_call.function.arguments),
+                linked_account_owner_id=<LINKED_ACCOUNT_OWNER_ID>,
+            )
+            print(result)
 
 
-      if __name__ == "__main__":
-          main()
+    if __name__ == "__main__":
+        main()
 
     ```
   </Step>
