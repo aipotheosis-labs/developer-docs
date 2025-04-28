@@ -147,3 +147,41 @@ Once you have identified the function you need to use, you can use ACI_EXECUTE_F
     ```
   </Accordion>
 </AccordionGroup>
+
+
+## Commandline Arguments
+
+
+<AccordionGroup>
+  <Accordion title="[Optional] --allowed-apps-only">
+    The `allowed-apps-only` argument is used to limit the apps/functions (tools) search (via `ACI_SEARCH_FUNCTIONS`) to only the allowed apps that are accessible to this agent (which is identified by the `ACI_API_KEY`). If not provided (default), the `ACI_SEARCH_FUNCTIONS` will be conducted on all apps/functions available on the ACI.dev platform.
+  </Accordion>
+  <Accordion title="[Required] --linked-account-owner-id">
+    The `linked-account-owner-id` is the owner ID of the linked accounts you want to use for the function execution. E.g., `--linked-account-owner-id johndoe` means that the function execution (e.g, `GMAIL__SEND_EMAIL`) will be done on behalf of the linked account of `GMAIL` app with owner ID `johndoe`.
+  </Accordion>
+  <Accordion title="[Optional] --transport">
+    The `transport` argument is used to specify the transport protocol to use for the MCP server.
+    The default transport is `stdio`.
+  </Accordion>
+  <Accordion title="[Optional] --port">
+    The `port` argument is used to specify the port to listen on for the MCP server if the `--transport` is set to `sse`.
+    The default port is `8000`.
+  </Accordion>
+</AccordionGroup>
+
+```bash help
+$ uvx aci-mcp unified-server --help
+Usage: aci-mcp unified-server [OPTIONS]
+
+  Start the unified MCP server with unlimited tool access.
+
+Options:
+  --allowed-apps-only             Limit the functions (tools) search to only
+                                  the allowed apps that are accessible to this
+                                  agent. (identified by ACI_API_KEY)
+  --linked-account-owner-id TEXT  the owner id of the linked account to use
+                                  for the tool calls  [required]
+  --transport [stdio|sse]         Transport type
+  --port INTEGER                  Port to listen on for SSE
+  --help                          Show this message and exit.
+```

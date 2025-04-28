@@ -129,3 +129,42 @@ Before using the `Apps MCP Server`, you need to complete several setup steps on 
     ```
   </Accordion>
 </AccordionGroup>
+
+## Commandline Arguments
+
+<AccordionGroup>
+  <Accordion title="[Required] --apps">
+    The `apps` argument is used to specify the apps you want to use with your MCP server. E.g., `--apps GMAIL,BRAVE,GITHUB` means that the MCP server will only access and expose the functions (tools) from `GMAIL`, `BRAVE` and `GITHUB` apps.
+    <Note>
+      The apps must be configured and enabled first.
+    </Note>
+  </Accordion>
+  <Accordion title="[Required] --linked-account-owner-id">
+    The `linked-account-owner-id` is the owner ID of the linked accounts you want to use for the function execution. E.g., `--linked-account-owner-id johndoe` means that the function execution (e.g, `GMAIL__SEND_EMAIL`) will be done on behalf of the linked account of `GMAIL` app with owner ID `johndoe`.
+  </Accordion>
+  <Accordion title="[Optional] --transport">
+    The `transport` argument is used to specify the transport protocol to use for the MCP server.
+    The default transport is `stdio`.
+  </Accordion>
+  <Accordion title="[Optional] --port">
+    The `port` argument is used to specify the port to listen on for the MCP server if the `--transport` is set to `sse`.
+    The default port is `8000`.
+  </Accordion>
+</AccordionGroup>
+
+```bash help
+$ uvx aci-mcp apps-server --help
+Usage: aci-mcp apps-server [OPTIONS]
+
+  Start the apps-specific MCP server to access tools under specific apps.
+
+Options:
+  --apps TEXT                     comma separated list of apps of which to use
+                                  the functions  [required]
+  --linked-account-owner-id TEXT  the owner id of the linked accounts to use
+                                  for the tool calls. You'll need to create
+                                  the linked accounts on platform.aci.dev
+                                  [required]
+  --transport [stdio|sse]         Transport type
+  --port INTEGER                  Port to listen on for SSE
+  --help                          Show this message and exit.
