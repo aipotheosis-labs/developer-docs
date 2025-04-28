@@ -12,7 +12,15 @@ The codebase is open source and can be found here: [aci-mcp <Icon icon="up-right
 
 ## Two Types of MCP Servers
 - **Apps MCP Server**: This server is similar to most of the existing MCP servers out there, where it exposes a set of functions from a specific app (e.g., Gmail, Github, etc.). However, our `Apps MCP Server` allows you to include multiple apps in a single server.
-- **Unified MCP Server**: This server is a dynamic server that provides two meta functions (tools) to discover and execute ANY functions (tools) available on ACI.dev platform.
+
+  <Frame>
+    <img src="/images/apps-mcp-server-diagram.svg" alt="Apps MCP Server"/>
+  </Frame>
+- **Unified MCP Server**: This server is a dynamic server that provides two **meta** functions (tools) - `ACI_SEARCH_FUNCTIONS` and `ACI_EXECUTE_FUNCTION` to dynamically discover and execute **ANY** functions (tools) available on ACI.dev platform.
+
+  <Frame>
+    <img src="/images/unified-mcp-server-diagram.svg" alt="Unified MCP Server"/>
+  </Frame>
 
 ## Comparison
 
