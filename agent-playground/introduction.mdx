@@ -1,0 +1,48 @@
+---
+title: 'Introduction'
+description: 'Introduction to ACI.dev MCP Servers'
+icon: 'robot'
+---
+
+The Agent Playground provides a no-code environment where you can test AI agents performing tasks on behalf of users. This playground allows you to test how your agent will interact with various functions and applications without writing any code. Behind the scene, the agent playground is using the OpenAI `gpt-4o` model to power the agent's response. 
+
+<Frame>
+  <img src="/images/platform/agent-playground-snapshot.webp" alt="Agent Playground" />
+</Frame>
+
+The agent playground operates in a stateless manner and we don't store any conversation history in the server side. Conversation history is cleared when you:
+- Refresh the page
+- Switch to a different agent
+- Change the linked account owner ID
+
+### Using the Playground
+
+To use the Agent Playground, you need to configure a linked account owner ID for the agent, This establishes an identity binding between the agent and a real user, allowing the agent to access the user's connected apps on behalf of the user. In the playground, you can select the apps and functions that the agent has been authorized to access. For a function to execute successfully, it must meet two conditions:
+- The agent has access permission to the app
+- The linked account owner must maintain the valid credentials (API key, refresh token, etc.) for the app.
+
+<Frame>
+  <img src="/images/platform/agent-playground-concept.png" alt="Agent Playground Concept" />
+</Frame> 
+
+####  Playground Settings
+
+To use the Agent Playground effectively, you need to configure the following settings:
+
+1. Select an Agent. Choose the `Agent` you want to test from the dropdown menu. You can create and manage agents in the "Manage Account" section if you need to set up a new one
+
+2. Choose a Linked Account Owner ID. Select the `Linked Account Owner ID` that the agent will use during testing. Note that each agent can only be linked to one account owner ID.
+
+3. Configure Application Access. Select the `Apps` you want your agent to access during the test session. Only apps that have been enabled for your selected agent will appear in this list.
+
+4. Select Available Functions. Choose specific `Functions` from your selected applications that the agent can use. This allows you to control exactly which tool are available during testing
+
+
+#### Play with the agent
+Once you've configured your settings, you can interact with the agent through a chat interface:
+
+1. Type natural language requests as if you were a user (e.g., "search for news about AI agents", “send a email to my friend that [aci.dev](http://aci.dev) has been opensourced”)
+2. Press "Run" or hit Enter to submit your request
+3. The agent will interpret your request and determine which functions to call
+4. You can view the function calling parameters and responses directly in the chat history
+5. Continue the conversation to refine requests or explore different functionality

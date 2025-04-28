@@ -47,6 +47,12 @@
               "mcp-servers/unified-server",
               "mcp-servers/apps-server"
             ]
+          },
+          {
+            "group": "Agent Playground",
+            "pages": [
+              "agent-playground/introduction"
+            ]
           }
         ]
       },
