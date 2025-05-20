@@ -36,7 +36,7 @@ All the `Linked Accounts` under the `App Configuration` will use the same authen
 You can use your **own OAuth2 client** instead of ACI.dev's default app when integrating with providers offering `oauth2` Authentication Method.
 
 <Frame>
-  <img src="/images/platform/app-configuration-oauth2-2.png" alt="App Configuration Concept Illustration" />
+  <img src="/images/platform/app-configuration-oauth2-2.png" alt="Custom OAuth2 App Configuration Illustration" />
 </Frame>
 
 ### Why use a custom OAuth2 app?
@@ -65,13 +65,13 @@ You can use your **own OAuth2 client** instead of ACI.dev's default app when int
 
    * **Redirect URL**
 
-     ```
+     ```markdown
      https://api.aci.dev/v1/linked-accounts/oauth2/callback
      ```
 
    * **Scope**
 
-     ```
+     ```markdown
      https://www.googleapis.com/auth/spreadsheets
      ```
 
