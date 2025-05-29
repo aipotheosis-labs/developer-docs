@@ -104,7 +104,7 @@ Once you have identified the function you need to use, you can use ACI_EXECUTE_F
       "mcpServers": {
         "aci-mcp-unified": {
           "command": "uvx",
-          "args": ["aci-mcp", "unified-server", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
+          "args": ["aci-mcp", "unified-server", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>", "--allowed-apps-only"],
           "env": {
             "ACI_API_KEY": "<YOUR_ACI_API_KEY>"
           }
@@ -126,7 +126,7 @@ Once you have identified the function you need to use, you can use ACI_EXECUTE_F
           "command": "bash",
           "args": [
             "-c",
-            "ACI_API_KEY=<YOUR_ACI_API_KEY> uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>"
+            "ACI_API_KEY=<YOUR_ACI_API_KEY> uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --allowed-apps-only"
           ]
         }
       }
@@ -140,10 +140,10 @@ Once you have identified the function you need to use, you can use ACI_EXECUTE_F
     export ACI_API_KEY=<YOUR_ACI_API_KEY>
 
     # Option 1: Run in stdio mode (default)
-    uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>
+    uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --allowed-apps-only
 
     # Option 2: Run in sse mode
-    uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --transport sse --port 8000
+    uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --allowed-apps-only --transport sse --port 8000
     ```
   </Accordion>
 </AccordionGroup>
@@ -154,7 +154,7 @@ Once you have identified the function you need to use, you can use ACI_EXECUTE_F
 
 <AccordionGroup>
   <Accordion title="[Optional] --allowed-apps-only">
-    The `allowed-apps-only` argument is used to limit the apps/functions (tools) search (via `ACI_SEARCH_FUNCTIONS`) to only the allowed apps that are accessible to this agent (which is identified by the `ACI_API_KEY`). If not provided (default), the `ACI_SEARCH_FUNCTIONS` will be conducted on all apps/functions available on the ACI.dev platform.
+    The `allowed-apps-only` flag is used to limit the apps/functions (tools) search (via `ACI_SEARCH_FUNCTIONS`) to only the allowed apps that are accessible to this agent (which is identified by the `ACI_API_KEY`). If not provided, the `ACI_SEARCH_FUNCTIONS` will be conducted on all apps/functions available on the ACI.dev platform.
   </Accordion>
   <Accordion title="[Required] --linked-account-owner-id">
     The `linked-account-owner-id` is the owner ID of the linked accounts you want to use for the function execution. E.g., `--linked-account-owner-id johndoe` means that the function execution (e.g, `GMAIL__SEND_EMAIL`) will be done on behalf of the linked account of `GMAIL` app with owner ID `johndoe`.
