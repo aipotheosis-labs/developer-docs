@@ -4,7 +4,7 @@ description: 'The ACI.dev API powers the ACI.dev platform and SDK.'
 ---
 
 <Note>
-  Most of the time, you won’t need to interact with the API directly. Instead, you should use our system through either [platform](platform.aci.dev) or [SDK](https://github.com/aipotheosis-labs/aci-python-sdk). 
+  Most of the time, you won’t need to interact with the API directly. Instead, you should use our offerrings through either [platform](platform.aci.dev) or [SDK](https://github.com/aipotheosis-labs/aci-python-sdk). 
 </Note>
 
 <Note>
@@ -13,9 +13,7 @@ description: 'The ACI.dev API powers the ACI.dev platform and SDK.'
 
 ## Authentication
 For programmatic access, the API supports API key-based authentication. You can generate an API key by creating an agent on [ACI.dev platform](platform.aci.dev).
-You can then provide this API key to SDK environment variable or set it in X-API-KEY header if you are calling API directly.
-
-Once obtained, you can provide this API key as an environment variable for the SDK or include it in the `X-API-KEY` header when calling the API directly.
+You can then provide this API key to SDK environment variable or set it in `X-API-KEY` header if you are calling API directly.
 
 <Card
   title="Sign up to ACI.dev"
@@ -23,13 +21,3 @@ Once obtained, you can provide this API key as an environment variable for the S
   href="https://platform.aci.dev/"
 >
 </Card>
-
-## Quota & Rate limiting
-
-During the beta period, all API calls are subject to a capped quota and rate limits. Currently, we allow up to 20 API calls per second and a total quota of 5,000 API calls per project per day.
-
-<Note>
-These limits are subject to change. If you have a use case that requires higher limits, please [contact us](mailto:support@aipolabs.xyz).
-</Note>
-
-
