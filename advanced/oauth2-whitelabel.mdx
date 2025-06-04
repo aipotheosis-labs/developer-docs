@@ -1,0 +1,74 @@
+---
+title: 'OAuth2 White-label'
+description: 'How to white-label the OAuth2 flow for OAuth2-based apps'
+icon: 'tag'
+---
+You can use your own **OAuth2 Client** instead of ACI.dev's default OAuth2 client when configuring `App` with `oauth2` authentication method.
+
+<Frame>
+  <img src="/images/platform/oauth2-whitelabel-toggle.png" alt="Custom OAuth2 App Configuration Illustration" />
+</Frame>
+
+
+## Why provide your own OAuth2 client?
+
+**Branding & White-labeling**
+
+- Your name and logo appear on OAuth2 consent screens
+- Delivers a white-labelled experience, free from third-party branding
+- Builds user trust by presenting a consistent, recognizable interface
+
+**Control & Security**
+
+- Full control over OAuth2 settings (token lifetimes, scopes, redirect URIs, etc.)
+- Easier integration with your own internal systems or policies
+
+## How to configure your own OAuth2 client?
+
+<Steps>
+  <Step title="Create an OAuth2 client in the App provider's dev portal">
+    For example, if you are configuring `GMAIL`, you need to create an OAuth2 client in the google cloud console.
+  </Step>
+  <Step title="Configure OAuth2 scopes in your OAuth2 client">
+    Most OAuth2 app providers have fine-grained control over the scopes of the OAuth2 client. You need to configure the scopes for your OAuth2 client to match the scopes the app requires.
+    <Warning>
+      Please make sure you have configured `All` listed scopes on the popup window.
+    </Warning>
+    <Frame>
+      <img src="/images/platform/oauth2-whitelabel-scopes.png" />
+    </Frame>
+  </Step>
+  <Step title="Set redirect URL in your OAuth2 client">
+    The redirect URL is the URL that the oauth2 provider will redirect to after the user has authenticated.
+    You have two options for setting the redirect URL:
+    - (Simple) Use ACI.dev's default redirect URL 
+    - (Advanced) Use your own redirect URL, e.g., `https://your-domain.com/oauth2/callback` 
+    <Note>
+      **When will you need to use the second option?**
+
+      Some OAuth2 providers—such as Google—display the domain of the redirect URL during the authorization flow. This means that if your users are redirected to our platform’s domain, it will appear in the authorization screen, potentially exposing our brand instead of yours.
+
+      To preserve your brand identity throughout the OAuth2 flow, you need to use you own redirect URL.
+      Then, configure your backend to forward requests from your own redirect URL to ACI.dev's redirect endpoint. This way, the domain shown to the end user during authorization remains your own, maintaining a seamless white-labeled experience
+    </Note>
+
+    <Frame>
+      <img src="/images/platform/oauth2-whitelabel-redirect-url.png" />
+    </Frame> 
+    <Warning>
+      If you use your own redirect URL, make sure you have configured your backend to forward requests from your own redirect URL to ACI.dev's redirect endpoint so ACI.dev can finish the account linking process.
+    </Warning>
+  </Step>
+  <Step title="Copy the OAuth2 client ID and secret">
+    Copy & paste the OAuth2 `client id` and `client secret` from the OAuth2 client you created.
+    <Frame>
+      <img src="/images/platform/oauth2-whitelabel-client-id-secret.png" />
+    </Frame>
+  </Step>
+</Steps>
+
+<Warning>
+  **You cannot change the OAuth2 client after setup.**
+  
+  If you need to update it, you must **delete and reconfigure the app** from scratch.
+</Warning>

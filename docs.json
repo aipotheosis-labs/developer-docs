@@ -53,6 +53,12 @@
             "pages": [
               "agent-playground/introduction"
             ]
+          },
+          {
+            "group": "Advanced",
+            "pages": [
+              "advanced/oauth2-whitelabel"
+            ]
           }
         ]
       },
