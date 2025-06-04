@@ -7,7 +7,7 @@ icon: 'gear'
 An `App Configuration` is created when you configure an `App` under a `Project`. It is a project-specific integration setting for a third-party service (an App) in the ACI platform. It represents:
 
 <Frame>
-  <img src="/images/platform/app-configuration-oauth2.png" alt="App Configuration Concept Illustration" />
+  <img src="/images/platform/app-configuration-oauth2-1.png" alt="App Configuration Concept Illustration" />
 </Frame>
 
 - **Integration Record**: The formal relationship between your Project and a specific App (like GitHub, Google Calendar, etc.)
@@ -30,3 +30,55 @@ All the `Linked Accounts` under the `App Configuration` will use the same authen
 <Note>
   You MUST create an `App Configuration` before your AI agents can use an `App`. Each `Project` can have one configuration per `App`, allowing you to control which `Apps` and `Functions` are accessible within that `Project`.
 </Note>
+
+## Custom OAuth2 App Support
+
+You can use your **own OAuth2 client** instead of ACI.dev's default app when integrating with providers offering `oauth2` Authentication Method.
+
+<Frame>
+  <img src="/images/platform/app-configuration-oauth2-2.png" alt="Custom OAuth2 App Configuration Illustration" />
+</Frame>
+
+### Why use a custom OAuth2 app?
+
+<Warning>
+  **White-labelling effect**
+  
+  If you use the default ACI.dev app, users will see our branding (name, logo) on the OAuth2 consent screen.
+  
+  By using **your own OAuth2 client**, your branding is shown — improving user trust and maintaining a consistent experience.
+</Warning>
+
+**Benefits:**
+
+* Your **name and logo** on consent screens
+* Full control over app access, quotas, and audit history
+* Avoids ACI.dev attribution in user-facing flows
+
+### How to configure your own OAuth2 app
+
+1. **Create an OAuth2 client** in your provider's developer portal.
+
+2. Copy your **Client ID** and **Client Secret** and paste them into the fields shown in the UI.
+
+3. Add the following to your OAuth2 app settings:
+
+   * **Redirect URL**
+
+     ```markdown
+     https://api.aci.dev/v1/linked-accounts/oauth2/callback
+     ```
+
+   * **Scope**
+
+     ```markdown
+     https://www.googleapis.com/auth/spreadsheets
+     ```
+
+4. ✅ Confirm both the redirect URL and scope exactly match the values provided in the interface.
+
+<Warning>
+  **You cannot change the OAuth2 client after setup.**
+  
+  If you need to update it, you must **delete and reconfigure the app** from scratch.
+</Warning>
