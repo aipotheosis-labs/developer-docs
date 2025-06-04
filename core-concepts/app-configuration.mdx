@@ -16,6 +16,11 @@ An `App Configuration` is created when you configure an `App` under a `Project`.
 - **Function Access Control**: Which specific functions from the App are enabled for use in your Project
 - **Linked Accounts Management**: Serves as the parent configuration for all individual user accounts connected to this App
 
+<Note>
+  You **MUST** create an `App Configuration` before your AI agents can use an `App`. Each `Project` can have one configuration per `App`, allowing you to control which `Apps` and `Functions` are accessible within that `Project`.
+</Note>
+
+
 Each Project can configure multiple Apps, but only one configuration per App is allowed to maintain simplicity. App Configurations are prerequisites for using any third-party service with your AI agents and are managed through the ACI Developer Portal.
 
 ## Authentication Types
@@ -24,61 +29,8 @@ Each App may support one or more authentication types. You need to select one th
 All the `Linked Accounts` under the `App Configuration` will use the same authentication type.
 
 - **OAuth2**: The most common authentication type for third-party services, e.g.: Gmail
+  <Note> 
+    For OAuth2-based apps, you can use your own OAuth2 client instead of ACI.dev's default OAuth2 client. Please refer to [OAuth2 White-label](/advanced/oauth2-whitelabel) for more details.
+  </Note>
 - **API Key**: A simple authentication method that uses an API key to authenticate requests, e.g.: Brave Search
 - **No Auth**: Some apps do not require additional authentication, e.g.: Arxiv, Hackernews
-
-<Note>
-  You MUST create an `App Configuration` before your AI agents can use an `App`. Each `Project` can have one configuration per `App`, allowing you to control which `Apps` and `Functions` are accessible within that `Project`.
-</Note>
-
-## Custom OAuth2 App Support
-
-You can use your **own OAuth2 client** instead of ACI.dev's default app when integrating with providers offering `oauth2` Authentication Method.
-
-<Frame>
-  <img src="/images/platform/app-configuration-oauth2-2.png" alt="Custom OAuth2 App Configuration Illustration" />
-</Frame>
-
-### Why use a custom OAuth2 app?
-
-<Warning>
-  **White-labelling effect**
-  
-  If you use the default ACI.dev app, users will see our branding (name, logo) on the OAuth2 consent screen.
-  
-  By using **your own OAuth2 client**, your branding is shown — improving user trust and maintaining a consistent experience.
-</Warning>
-
-**Benefits:**
-
-* Your **name and logo** on consent screens
-* Full control over app access, quotas, and audit history
-* Avoids ACI.dev attribution in user-facing flows
-
-### How to configure your own OAuth2 app
-
-1. **Create an OAuth2 client** in your provider's developer portal.
-
-2. Copy your **Client ID** and **Client Secret** and paste them into the fields shown in the UI.
-
-3. Add the following to your OAuth2 app settings:
-
-   * **Redirect URL**
-
-     ```markdown
-     https://api.aci.dev/v1/linked-accounts/oauth2/callback
-     ```
-
-   * **Scope**
-
-     ```markdown
-     https://www.googleapis.com/auth/spreadsheets
-     ```
-
-4. ✅ Confirm both the redirect URL and scope exactly match the values provided in the interface.
-
-<Warning>
-  **You cannot change the OAuth2 client after setup.**
-  
-  If you need to update it, you must **delete and reconfigure the app** from scratch.
-</Warning>
