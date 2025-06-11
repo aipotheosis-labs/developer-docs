@@ -59,6 +59,11 @@
             "pages": [
               "advanced/oauth2-whitelabel"
             ]
+          },
+          {
+            "group": "Cookbooks",
+            "pages": [
+            ]
           }
         ]
       },
