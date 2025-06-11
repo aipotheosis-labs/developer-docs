@@ -57,7 +57,8 @@
           {
             "group": "Advanced",
             "pages": [
-              "advanced/oauth2-whitelabel"
+              "advanced/oauth2-whitelabel",
+              "advanced/camel-aci-cookbook"
             ]
           },
           {
