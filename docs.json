@@ -57,13 +57,13 @@
           {
             "group": "Advanced",
             "pages": [
-              "advanced/oauth2-whitelabel",
-              "advanced/camel-aci-cookbook"
+              "advanced/oauth2-whitelabel"              
             ]
           },
           {
             "group": "Cookbooks",
             "pages": [
+              "cookbooks/camel-ai"
             ]
           }
         ]
