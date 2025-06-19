@@ -104,7 +104,7 @@ Once you have identified the function you need to use, you can use ACI_EXECUTE_F
       "mcpServers": {
         "aci-mcp-unified": {
           "command": "uvx",
-          "args": ["aci-mcp", "unified-server", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>", "--allowed-apps-only"],
+          "args": ["aci-mcp@latest", "unified-server", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>", "--allowed-apps-only"],
           "env": {
             "ACI_API_KEY": "<YOUR_ACI_API_KEY>"
           }
@@ -126,7 +126,7 @@ Once you have identified the function you need to use, you can use ACI_EXECUTE_F
           "command": "bash",
           "args": [
             "-c",
-            "ACI_API_KEY=<YOUR_ACI_API_KEY> uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --allowed-apps-only"
+            "ACI_API_KEY=<YOUR_ACI_API_KEY> uvx aci-mcp@latest unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --allowed-apps-only"
           ]
         }
       }
@@ -140,10 +140,10 @@ Once you have identified the function you need to use, you can use ACI_EXECUTE_F
     export ACI_API_KEY=<YOUR_ACI_API_KEY>
 
     # Option 1: Run in stdio mode (default)
-    uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --allowed-apps-only
+    uvx aci-mcp@latest unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --allowed-apps-only
 
     # Option 2: Run in sse mode
-    uvx aci-mcp unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --allowed-apps-only --transport sse --port 8000
+    uvx aci-mcp@latest unified-server --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --allowed-apps-only --transport sse --port 8000
     ```
   </Accordion>
 </AccordionGroup>
@@ -170,7 +170,7 @@ Once you have identified the function you need to use, you can use ACI_EXECUTE_F
 </AccordionGroup>
 
 ```bash help
-$ uvx aci-mcp unified-server --help
+$ uvx aci-mcp@latest unified-server --help
 Usage: aci-mcp unified-server [OPTIONS]
 
   Start the unified MCP server with unlimited tool access.
