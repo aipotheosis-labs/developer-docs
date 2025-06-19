@@ -86,7 +86,7 @@ Before using the `Apps MCP Server`, you need to complete several setup steps on 
       "mcpServers": {
         "aci-mcp-apps": {
             "command": "uvx",
-            "args": ["aci-mcp", "apps-server", "--apps", "<APP_1>,<APP_2>,...", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
+            "args": ["aci-mcp@latest", "apps-server", "--apps", "<APP_1>,<APP_2>,...", "--linked-account-owner-id", "<LINKED_ACCOUNT_OWNER_ID>"],
             "env": {
                 "ACI_API_KEY": "<ACI_API_KEY>"
             }
@@ -108,7 +108,7 @@ Before using the `Apps MCP Server`, you need to complete several setup steps on 
           "command": "bash",
           "args": [
             "-c",
-            "ACI_API_KEY=<YOUR_ACI_API_KEY> uvx aci-mcp apps-server --apps <APP_1>,<APP_2>,... --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>"
+            "ACI_API_KEY=<YOUR_ACI_API_KEY> uvx aci-mcp@latest apps-server --apps <APP_1>,<APP_2>,... --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>"
           ]
         }
       }
@@ -122,10 +122,10 @@ Before using the `Apps MCP Server`, you need to complete several setup steps on 
     export ACI_API_KEY=<YOUR_ACI_API_KEY>
 
     # Option 1: Run in stdio mode (default)
-    uvx aci-mcp apps-server --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>
+    uvx aci-mcp@latest apps-server --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID>
 
     # Option 2: Run in sse mode
-    uvx aci-mcp apps-server --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --transport sse --port 8000
+    uvx aci-mcp@latest apps-server --apps "<APP_1>,<APP_2>,..." --linked-account-owner-id <LINKED_ACCOUNT_OWNER_ID> --transport sse --port 8000
     ```
   </Accordion>
 </AccordionGroup>
@@ -153,7 +153,7 @@ Before using the `Apps MCP Server`, you need to complete several setup steps on 
 </AccordionGroup>
 
 ```bash help
-$ uvx aci-mcp apps-server --help
+$ uvx aci-mcp@latest apps-server --help
 Usage: aci-mcp apps-server [OPTIONS]
 
   Start the apps-specific MCP server to access tools under specific apps.
