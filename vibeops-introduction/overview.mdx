@@ -1,0 +1,120 @@
+---
+title: 'VibeOps Quickstart'
+description: 'Get started with VibeOps - quickly create end-to-end web apps'
+---
+
+VibeOps is a platform that abstracts away the complexity of DevOps, letting you build and deploy full-stack web applications through natural language conversations with AI, right from your IDE.
+
+# Getting Started with VibeOps
+
+<Steps>
+  <Step title="Visit VibeOps Platform">
+    Navigate to [VibeOps <Icon icon="up-right-from-square"/>](https://vibeops.aci.dev/) and sign in with your Google account.
+    
+  </Step>
+
+  <Step title="Create Your First Project">
+    On the main dashboard, you'll see "No projects yet" if this is your first time. Click the **Create Project** button to get started.
+    
+    <Frame>
+      <img src="/images/vibeops/create-project-dialog.png" alt="Create New Project Dialog" />
+    </Frame>
+    
+    In the project creation dialog:
+    - Enter a **Project Name** (e.g., "Todo App")
+    - Optionally add a **Description** for your project
+    - Click **Create Project** to continue
+  </Step>
+
+  <Step title="Configure MCP (Model Context Protocol)">
+    After creating your project, you'll see the MCP configuration screen with everything you need to connect your project to Cursor.
+    
+    <Frame>
+      <img src="/images/vibeops/mcp-configuration.png" alt="MCP Configuration Screen with API key and setup instructions" />
+    </Frame>
+    
+    ### 1. Install UV Package Manager
+    First, you need to install UV since the MCP server uses `uvx` to execute. Run this command in your terminal:
+    
+    ```bash
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
+    
+    After installation, restart your terminal or run `source ~/.bashrc` (or `source ~/.zshrc` for zsh) to ensure `uvx` is available in your PATH.
+    
+    ### 2. Copy Configuration for Your IDE
+    **Copy the complete JSON configuration shown on the VibeOps screen and save it.** You'll use this configuration in the next step to connect Cursor to your VibeOps project.
+    
+    <Note>
+      Don't worry if you lose the configuration - you can always retrieve it later from inside your project settings.
+    </Note>
+  </Step>
+
+  <Step title="Configure Cursor MCP Integration">
+    Now you need to add this configuration to Cursor:
+    
+    1. Open **Cursor Settings** with **Cmd/Ctrl + Shift + J**
+    2. Select the **MCP** tab
+    3. Click on **+ Add new global MCP server**
+     <Frame>
+      <img src="/images/vibeops/cursor-settings-mcp-tab.png" alt="Cursor Settings showing the MCP tab" />
+    </Frame> 
+    4. Paste the JSON configuration from before and it should look like the following but with your api key
+    <Frame>
+      <img src="/images/vibeops/cursor-add-mcp-server.png" alt="Cursor Add new global MCP server dialog" />
+    </Frame>
+  </Step>
+
+  <Step title="Verify the Connection">
+    Navigating back to your MCP settings you should see your new connection it should look something like this
+    <Frame>
+      <img src="/images/vibeops/cursor-mcp-tools.png" alt="Cursor MCP Settings showing the configured VibeOps server" />
+    </Frame>
+    
+    <Note>
+      You may need to click the refresh button for the MCP server to work
+    </Note>
+    
+    ### Enable Seamless Development
+    Through **Cmd/Ctrl + Shift + J** and then navigating to **Features**, you can enable the following option:
+    
+    <Frame>
+      <img src="/images/vibeops/cursor-mcp-enabled-feature.png" alt="MCP feature enabled for seamless development" />
+    </Frame>
+    
+    <Tip>
+      **We recommend enabling this feature for seamless development.** This will allow VibeOps to work more efficiently with your development workflow and provide a smoother experience when building applications.
+    </Tip>
+  </Step>
+</Steps>
+
+# Test Your Setup
+
+Now let's test your VibeOps + Cursor integration by creating a simple Todo App:
+
+1. **Open Cursor Chat** - Press **Cmd/Ctrl + Shift + B** to start a new chat session
+2. **Try this simple prompt:**
+
+```
+Create a todo app and deploy it using VibeOps
+```
+
+# What's Next?
+
+Congratulations! You now have VibeOps integrated with Cursor and can start building end-to-end web applications with AI assistance.
+
+## Ready to Build Something Amazing?
+
+Check out our [Examples](/vibeops-introduction/examples) section to see what's possible with VibeOps! Try building:
+
+- **🎮 [Labyrinth Puzzle Game](https://dd93fc57-bb74-4477-90f9-b4ba4aec1bd.vercel.app/)** - Interactive grid-based game with card mechanics
+- **🏎️ [Luxury Car Gallery & Racing](https://daef8895-2a67-4b9b-bbb1-1f2108c765976b5ea9b9-3ab1-aci-vibe-ops.vercel.app/)** - Cyberpunk-styled gallery with racing competitions
+- **🎨 [Digital Art Canvas & Gallery](https://c7712962-a1a4-4ad9-8e0e-53a9758b68e8a7f0fcbc-17f2-aci-vibe-ops.vercel.app/)** - Painting app with public sharing features
+- **📚 [Interactive Coloring Book](https://c7712962-a1a4-4ad9-8e0e-53a9758b68e8a22-git-716038-aci-vibe-ops.vercel.app/)** - Nature scenes users can color and save
+- **👾 [Monster Pokedex](https://c7712962-a1a4-4ad9-8e0e-53a9758b68e8d36-git-b1d309-aci-vibe-ops.vercel.app/)** - Custom creature database with stats and images
+- **🍷 [Wine Producer Ranking](https://c7712962-a1a4-4ad9-8e0e-53a9758b68e.vercel.app/)** - Voting platform with real-time rankings
+- **💻 [Neobrutalism Landing Page](https://0e68f5af-fc13-4058-9544-3c42e910f98e4f6-git-0e883c-aci-vibe-ops.vercel.app)** - Bold, developer-focused design showcase
+
+Start experimenting with different project ideas and see how VibeOps can accelerate your development workflow!
+
+Need more help? Join our [Discord community <Icon icon="discord"/>](https://discord.gg/nnqFSzq2ne) or reach out to [support@aipolabs.xyz](mailto:support@aipolabs.xyz). 
