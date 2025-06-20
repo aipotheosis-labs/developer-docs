@@ -1,0 +1,119 @@
+---
+title: 'VibeOps Platform Quickstart'
+description: 'Get started with VibeOps - quickly create end-to-end web apps'
+---
+
+VibeOps is a platform that abstracts away the complexity of DevOps, letting you build and deploy full-stack web applications through natural language conversations with AI, right from your IDE.
+
+# Getting Started with VibeOps
+
+<Steps>
+  <Step title="Visit VibeOps Platform">
+    Navigate to [VibeOps <Icon icon="up-right-from-square"/>](https://vibeops.aci.dev/) and sign in with your Google account.
+    
+  </Step>
+
+  <Step title="Create Your First Project">
+    On the main dashboard, you'll see "No projects yet" if this is your first time. Click the **Create Project** button to get started.
+    
+    <Frame>
+      <img src="/images/vibeops/create-project-dialog.png" alt="Create New Project Dialog" />
+    </Frame>
+    
+    In the project creation dialog:
+    - Enter a **Project Name** (e.g., "Todo App")
+    - Optionally add a **Description** for your project
+    - Click **Create Project** to continue
+  </Step>
+
+  <Step title="Configure MCP (Model Context Protocol)">
+    After creating your project, you'll see the MCP configuration screen with everything you need to connect your project to Cursor.
+    
+    <Frame>
+      <img src="/images/vibeops/mcp-configuration.png" alt="MCP Configuration Screen with API key and setup instructions" />
+    </Frame>
+    
+    ### 1. Install UV Package Manager
+    First, you need to install UV since the MCP server uses `uvx` to execute. Run this command in your terminal:
+    
+    ```bash
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
+    
+    After installation, restart your terminal or run `source ~/.bashrc` (or `source ~/.zshrc` for zsh) to ensure `uvx` is available in your PATH.
+    
+    ### 2. Copy Configuration for Your IDE
+    **Copy the complete JSON configuration shown on the VibeOps screen and save it.** You'll use this configuration in the next step to connect Cursor to your VibeOps project.
+    
+    <Note>
+      Don't worry if you lose the configuration - you can always retrieve it later from inside your project settings.
+    </Note>
+  </Step>
+
+  <Step title="Configure Cursor MCP Integration">
+    Now you need to add this configuration to Cursor:
+    
+    1. Open **Cursor Settings** with **Cmd/Ctrl + Shift + J**
+    2. Select the **MCP** tab
+    3. Click on **+ Add new global MCP server**
+     <Frame>
+      <img src="/images/vibeops/cursor-settings-mcp-tab.png" alt="Cursor Settings showing the MCP tab" />
+    </Frame> 
+    4. Paste the JSON configuration from before and it should look like the following but with your api key
+    <Frame>
+      <img src="/images/vibeops/cursor-add-mcp-server.png" alt="Cursor Add new global MCP server dialog" />
+    </Frame>
+  </Step>
+
+  <Step title="Verify the Connection">
+    Navigating back to your MCP settings you should see your new connection it should look something like this
+    <Frame>
+      <img src="/images/vibeops/cursor-mcp-tools.png" alt="Cursor MCP Settings showing the configured VibeOps server" />
+    </Frame>
+    
+    <Note>
+      You may need to click the refresh button for the MCP server to work
+    </Note>
+    
+    The available tools should include:
+    - `ACI_SEARCH_FUNCTIONS` - Search for available functions
+    - `ACI_EXECUTE_FUNCTION` - Execute functions on your behalf  
+    - `ACI_GET_PROJECT_STATE` - Get current project status
+  </Step>
+</Steps>
+
+# Test Your Setup
+
+Now let's test your VibeOps + Cursor integration:
+
+<Steps>
+  <Step title="Start a New Chat in Cursor">
+    Open Cursor and start a new chat session with **Cmd/Ctrl + Shift + B**. Make sure you can see the **aci-vibeops-server** enabled in your available tools.
+    
+    <Frame>
+      <img src="/images/vibeops/cursor-chat-menu.png" alt="Cursor chat interface showing MCP tools menu" />
+    </Frame>
+  </Step>
+
+  <Step title="Test with a Simple Prompt">
+    Try this example prompt to test your setup:
+    
+    ```
+    Can you help me get the current state of my VibeOps project? 
+    Then show me what functions are available for managing projects.
+    ```
+    
+    This prompt will:
+    - Use `ACI_GET_PROJECT_STATE` to check your project status
+    - Use `ACI_SEARCH_FUNCTIONS` to discover available functions
+    - Give you an overview of what's possible with your setup
+  </Step>
+</Steps>
+
+# What's Next?
+
+Congratulations! You now have VibeOps integrated with Cursor and can start building end-to-end web applications with AI assistance.
+
+Start experimenting with different project ideas and see how VibeOps can accelerate your development workflow!
+
+Need more help? Join our [Discord community <Icon icon="discord"/>](https://discord.gg/nnqFSzq2ne) or reach out to [support@aipolabs.xyz](mailto:support@aipolabs.xyz). 
