@@ -1,0 +1,322 @@
+---
+title: "Continuous Chat Agent with Tools"
+description: Building a persistent chat agent with external tool access using CAMEL AI and ACI.dev
+icon: "comments"
+---
+
+# ACI Cookbook: Continuous Chat Agent with Tools
+
+<div className="align-center">
+  ⭐ *Visit [ACI.dev](https://aci.dev), join our [Discord](https://discord.gg/nnqFSzq2ne) or check
+  our [Documentation](https://www.aci.dev/docs/introduction/overview)*
+</div>
+
+## What is CAMEL AI?
+
+**CAMEL AI** is a powerful open-source framework for building autonomous, communicative AI agents. It excels at creating agents that can collaborate, maintain memory, and, most importantly, **use external tools** to perform complex tasks.
+
+This cookbook demonstrates a foundational and highly practical pattern: creating a **single, continuous chat agent** that maintains conversation context and has access to a powerful suite of tools through ACI.dev.
+
+**Key Learnings:**
+
+- Building a persistent chat agent with a simple `while` loop.
+- Integrating external tools (Brave Search, GitHub, Arxiv) via ACI.dev.
+- Creating a "tool-aware" agent by crafting an effective system prompt.
+- Setting up the ACI.dev MCP (Model Context Protocol) for tool access.
+- Best practices for creating an interactive, tool-enabled chat experience.
+
+## 🎯 Overview
+
+This cookbook provides a clear, step-by-step recipe for building a continuous chat agent that can use tools. We will create one specialized "Research Agent" that maintains a conversation and can use web search, GitHub, and Arxiv to answer questions, demonstrating the power of combining CAMEL AI with ACI.dev.
+
+## 📦 Installation
+
+The ACI Python SDK requires Python 3.10+.
+First, install the required packages for this cookbook:
+
+```bash
+pip install "camel-ai[all]==0.2.62" python-dotenv rich uv
+```
+
+> **Note:** This method uses uv, a fast Python installer and toolchain, to run the ACI.dev MCP server directly from the command line, as defined in our configuration script.
+
+## 🔑 Setting Up API Keys
+
+This project requires keys for both the AI model and the tools.
+
+1. **Google Gemini API Key**: Get your key from [Google AI Studio](https://aistudio.google.com/).
+2. **ACI.dev API Key**: Sign up at [ACI.dev](https://aci.dev) and get your key from your Project Settings.
+3. **Linked Account Owner ID**: This is a unique identifier you set when connecting apps (like GitHub) in ACI.dev.
+
+Create a `.env` file in your project folder with these variables:
+
+```env
+# Google Gemini API Key (for the AI model)
+GOOGLE_API_KEY="your_google_api_key_here"
+
+# ACI Configuration (for the tools)
+ACI_API_KEY="your_aci_api_key_here"
+LINKED_ACCOUNT_OWNER_ID="your_linked_account_id_here"
+```
+
+## 🛠️ MCP Configuration Helper
+
+The ACI.dev Apps MCP (Model Context Protocol) sever acts as a bridge to your tools. This helper script reads your `.env` file and creates a `config.json` file to tell CAMEL how to launch the MCP server.
+
+Create a file named `create_config.py`:
+
+```python
+import json
+import os
+import shutil
+
+from dotenv import load_dotenv
+
+def create_config():
+    """Create MCP config with proper environment variable substitution"""
+    load_dotenv() # load variables from the env
+    aci_api_key = os.getenv("ACI_API_KEY")
+    linked_account_owner_id = os.getenv("LINKED_ACCOUNT_OWNER_ID")
+
+    if not aci_api_key or not linked_account_owner_id:
+        raise ValueError(
+            "ACI_API_KEY and LINKED_ACCOUNT_OWNER_ID are required in .env"
+        )
+
+    # Check if uvx is available, fallback to python -m if not
+    command = "uvx" if shutil.which("uvx") else "python -m"
+    args = (
+        ["aci-mcp", "apps-server", "--apps=BRAVE_SEARCH,GITHUB,ARXIV", "--linked-account-owner-id", linked_account_owner_id]
+        if command == "uvx"
+        else ["-m", "aci_mcp", "apps-server", "--apps=BRAVE_SEARCH,GITHUB,ARXIV", "--linked-account-owner-id", linked_account_owner_id]
+    )
+
+    # This configuration tells CAMEL how to run the ACI tool server.
+    config = {
+        "mcpServers": {
+            "aci_apps": {
+                "command": command,
+                "args": args,
+                "env": {"ACI_API_KEY": aci_api_key},
+            }
+        }
+    }
+
+    with open("config.json", "w") as f:
+        json.dump(config, f, indent=2)
+
+    print("✓ MCP Config created successfully")
+    return config
+```
+
+## 🚀 Complete Implementation
+
+Here is the full code for the tool-enabled chat agent. It combines the continuous `while` loop with the `MCPToolkit` for tool access.
+
+Save this as `main.py`:
+
+```python
+import asyncio
+import os
+
+from camel.agents import ChatAgent
+from camel.messages import BaseMessage
+from camel.models import ModelFactory
+from camel.toolkits import MCPToolkit
+from camel.types import ModelPlatformType
+from create_config import create_config
+from dotenv import load_dotenv
+from rich import print as rprint
+
+async def main():
+    """A continuous chat loop with a single, tool-enabled AI agent."""
+    load_dotenv()
+
+    # --- 1. Configuration ---
+    AGENT_NAME = "Research Assistant"
+    SYSTEM_PROMPT = """You are a meticulous Research Assistant.
+    Your goal is to provide accurate, up-to-date information by using the tools available to you.
+    You have access to the following tools:
+    - BRAVE_SEARCH: For general web searches and finding current events.
+    - ARXIV: For searching academic papers and preprints.
+    - GITHUB: For searching code, repositories, and developer trends.
+    Always state which tool you are using when you perform an action.
+    """
+
+    # --- 2. MCP and Tool Initialization ---
+    rprint("[cyan]🔧 Setting up ACI MCP connection...[/cyan]")
+    create_config()
+    mcp_toolkit = MCPToolkit(config_path="config.json")
+    await mcp_toolkit.connect()
+    tools = mcp_toolkit.get_tools()
+    rprint(f"[green]✅ Connected! Found {len(tools)} ACI tools.[/green]\n")
+
+    try:
+        # --- 3. Agent and Model Initialization ---
+        google_api_key = os.getenv("GOOGLE_API_KEY")
+        if not google_api_key:
+            raise ValueError("GOOGLE_API_KEY is required in .env")
+
+        model = ModelFactory.create(
+            model_platform=ModelPlatformType.GEMINI,
+            model_type="gemini-2.5-pro",
+            api_key=google_api_key,
+            model_config_dict={"temperature": 0.7},
+        )
+        system_message = BaseMessage.make_assistant_message(
+            role_name=AGENT_NAME, content=SYSTEM_PROMPT
+        )
+        # Pass the tools to the agent during initialization
+        agent = ChatAgent(system_message=system_message, model=model, tools=tools)
+
+        rprint(f"[bold green]🤖 Starting chat with {AGENT_NAME}.[/bold green]")
+        rprint("[dim]Available tools: BRAVE_SEARCH, GITHUB, ARXIV[/dim]")
+        rprint("[dim]Type 'exit', 'quit', or 'bye' to end.[/dim]")
+
+        # --- 4. The Continuous Chat Loop ---
+        while True:
+            user_input = input("\nYou: ").strip()
+
+            if user_input.lower() in ["exit", "quit", "bye"]:
+                rprint(f"[bold yellow]👋 Goodbye![/bold yellow]")
+                break
+
+            user_message = BaseMessage.make_user_message(
+                role_name="User", content=user_input
+            )
+
+            rprint(f"[dim]{AGENT_NAME} is thinking...[/dim]")
+            response = await agent.astep(user_message)
+
+            if response.msgs:
+                rprint(f"[cyan]{AGENT_NAME}:[/cyan] {response.msgs[0].content}")
+
+    except KeyboardInterrupt:
+        rprint(f"\n[bold yellow]👋 Goodbye![/bold yellow]")
+    finally:
+        # --- 5. Cleanup ---
+        await mcp_toolkit.disconnect()
+        rprint("[bold green]🔌 MCP Toolkit disconnected.[/bold green]")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## 🧠 Understanding the Continuous Chat Loop
+
+The continuous chat functionality in this cookbook is powered by a simple yet effective `while True` loop in the `main.py` script. This loop enables the agent to maintain an ongoing conversation with the user until explicitly terminated. Here's how it works and why it supports continuous chats:
+
+- **The `while True` Loop**: Located in the "4. The Continuous Chat Loop" section of `main.py`, the loop runs indefinitely, prompting the user for input repeatedly. This creates a persistent chat interface where the user can keep asking questions without restarting the script.
+
+  ```python
+  while True:
+      user_input = input("\nYou: ").strip()
+  ```
+
+- **Exiting the Loop**: The loop checks if the user enters "exit", "quit", or "bye" (case-insensitive). If so, it breaks the loop, ending the chat session gracefully.
+
+  ```python
+  if user_input.lower() in ["exit", "quit", "bye"]:
+      rprint(f"[bold yellow]👋 Goodbye![/bold yellow]")
+      break
+  ```
+
+- **Processing User Input**: For each user input, the script creates a `BaseMessage` object with the role "User" and the input content. This message is passed to the `ChatAgent`'s `astep` method, which processes the input asynchronously and generates a response.
+
+  ```python
+  user_message = BaseMessage.make_user_message(
+      role_name="User", content=user_input
+  )
+  response = await agent.astep(user_message)
+  ```
+
+- **Maintaining Context**: The `ChatAgent` in CAMEL AI maintains conversation context internally by storing the history of messages (user inputs and agent responses). This allows the agent to refer to previous interactions, making the chat feel continuous and coherent. For example, if you ask follow-up questions, the agent can use the prior context to provide relevant answers.
+
+- **Why It’s Continuous**: Unlike a one-off query system, the `while` loop ensures the agent remains active, ready to accept new inputs without reinitializing the model or tools. The agent's memory (message history) and tool connections persist throughout the session, enabling a seamless, interactive experience.
+
+- **Best Practices for Continuous Chats**:
+
+  - **Clear Exit Commands**: Always provide clear ways to exit (like "exit", "quit", "bye") to avoid forcing users to interrupt the script (e.g., with Ctrl+C).
+  - **Feedback Cues**: Use visual cues (like "Research Assistant is thinking...") to inform users the agent is processing input, improving the interactive feel.
+  - **Error Handling**: The `try-except` block catches interruptions (e.g., KeyboardInterrupt), ensuring graceful termination and cleanup of resources like the MCP connection.
+  - **Scalability**: For production use, consider limiting context size (e.g., truncating old messages) to manage memory if chats grow very long.
+
+This loop is the backbone of the interactive chat experience, making it easy to extend with more features like multi-agent collaboration or additional tools.
+
+## 🎮 Usage Example
+
+Run the script from your terminal:
+
+```bash
+python main.py
+```
+
+The script will first create `config.json`, connect to the tool server, and then present you with the chat prompt. Now, you can ask questions that require real-world, up-to-date information.
+
+### Example Tool-Using Session
+
+```
+> python main.py
+✓ MCP Config created successfully
+🔧 Setting up ACI MCP connection...
+✅ Connected! Found 3 ACI tools.
+
+🤖 Starting chat with Research Assistant.
+Available tools: BRAVE_SEARCH, GITHUB, ARXIV
+Type 'exit', 'quit', or 'bye' to end.
+
+You: What are the latest advancements in AI-powered code generation tools?
+
+Research Assistant is thinking...
+Research Assistant: Using BRAVE_SEARCH to find recent advancements in AI code generation tools.
+[Search Results Summary]: Recent advancements include improved multi-modal models and IDE integrations like GitHub Copilot.
+1. Multi-modal models now support UI generation from sketches.
+2. IDE integrations provide seamless coding assistance.
+
+You: Can you find a GitHub repository for an AI code generation tool?
+
+Research Assistant is thinking...
+Research Assistant: Using GITHUB to search for AI code generation repositories.
+[GitHub Search Results]: Found 'Tabby' (https://github.com/TabbyML/tabby), an open-source AI coding assistant.
+
+You: exit
+
+👋 Goodbye!
+🔌 MCP Toolkit disconnected.
+```
+
+## 🎯 Conclusion
+
+By combining CAMEL AI's agent framework, ACI.dev's tool ecosystem, and a simple `while` loop, you've created a powerful and practical AI assistant. This pattern is a robust foundation for building more advanced applications.
+
+You have learned how to:
+
+- Build a continuous chat agent that maintains context.
+- Seamlessly integrate external tools like web search and GitHub.
+- Configure the ACI.dev MCP (Model Context Protocol) server to serve tools to your agent.
+- Write effective system prompts that encourage tool use.
+
+From here, the possibilities are endless. You can add more tools, create different agent personalities, or even build multi-agent workflows where several tool-enabled agents collaborate.
+
+## 🔧 Troubleshooting and Tips
+
+If you encounter issues while running this cookbook, here are common solutions:
+
+- **Connection Issues?** Ensure your ACI.dev API key is valid and your linked account owner ID is correct in the `.env` file.
+- **Event Loop Errors?** If you hit a "RuntimeError: Event loop is already running," try adding `import nest_asyncio; nest_asyncio.apply()` at the top of `main.py` to handle async conflicts.
+- **Import Errors?** Make sure you have the latest version of CAMEL AI installed with `pip install --upgrade "camel-ai[all]==0.2.62"`
+- **Tool Loading Issues?** The MCP toolkit automatically discovers available tools from your ACI account. Ensure your apps (BRAVE_SEARCH, GITHUB, ARXIV) are properly enabled in ACI.dev Project Settings.
+- **No Tools Found?** Double-check that your `LINKED_ACCOUNT_OWNER_ID` matches the owner ID you used when linking accounts in ACI.dev.
+- **API Rate Limits?** If you hit rate limits, the agent will typically handle retries automatically, but you may need to wait a moment between requests.
+
+## Example Queries
+
+You can try asking the Research Assistant various questions that utilize different tools:
+
+- "Search for recent developments in large language models and summarize the key findings"
+- "Find a GitHub repository for building chatbots and explain its main features"
+- "Look up recent papers on AI agents from ArXiv and give me a brief overview"
+- "What are the trending AI projects on GitHub this month?"
+- "Search for information about CAMEL AI framework and its applications"
+
+**Happy coding!**

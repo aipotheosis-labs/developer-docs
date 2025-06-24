@@ -15,10 +15,7 @@
         "groups": [
           {
             "group": "Introduction",
-            "pages": [
-              "introduction/overview",
-              "introduction/quickstart"
-            ]
+            "pages": ["introduction/overview", "introduction/quickstart"]
           },
           {
             "group": "Core Concepts",
@@ -50,21 +47,15 @@
           },
           {
             "group": "Agent Playground",
-            "pages": [
-              "agent-playground/introduction"
-            ]
+            "pages": ["agent-playground/introduction"]
           },
           {
             "group": "Advanced",
-            "pages": [
-              "advanced/oauth2-whitelabel"              
-            ]
+            "pages": ["advanced/oauth2-whitelabel"]
           },
           {
             "group": "Cookbooks",
-            "pages": [
-              "cookbooks/camel-ai"
-            ]
+            "pages": ["cookbooks/camel-ai", "cookbooks/continuous-agent-with-tools"]
           }
         ]
       },
@@ -73,10 +64,7 @@
         "groups": [
           {
             "group": "Introduction",
-            "pages": [
-              "vibeops-introduction/overview",
-              "vibeops-introduction/examples"
-            ]
+            "pages": ["vibeops-introduction/overview", "vibeops-introduction/examples"]
           }
         ]
       },
@@ -85,9 +73,7 @@
         "groups": [
           {
             "group": "Introduction",
-            "pages": [
-              "agent-examples/overview"
-            ]
+            "pages": ["agent-examples/overview"]
           }
         ]
       },
@@ -96,19 +82,14 @@
         "groups": [
           {
             "group": "Introduction",
-            "pages": [
-              "api-reference/overview"
-            ]
+            "pages": ["api-reference/overview"]
           },
           {
             "group": "Endpoints",
             "pages": [
               {
                 "group": "Apps",
-                "pages": [
-                  "api-reference/apps/search-apps",
-                  "api-reference/apps/get-app-details"
-                ]
+                "pages": ["api-reference/apps/search-apps", "api-reference/apps/get-app-details"]
               },
               {
                 "group": "Functions",
