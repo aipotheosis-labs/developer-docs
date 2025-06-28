@@ -63,7 +63,8 @@
           {
             "group": "Cookbooks",
             "pages": [
-              "cookbooks/camel-ai"
+              "cookbooks/camel-ai",
+              "cookbooks/continuous-agent-with-tools"
             ]
           }
         ]
